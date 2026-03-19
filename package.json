@@ -1,0 +1,8 @@
+{
+  "name": "convincimi",
+  "version": "1.0.0",
+  "description": "Convincimi - Guide sulle relazioni",
+  "dependencies": {
+    "stripe": "^14.0.0"
+  }
+}
