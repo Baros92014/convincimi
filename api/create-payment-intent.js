@@ -1,66 +1,11 @@
-const Stripe = require('stripe');
- 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
- 
-// Prezzi dei libri in centesimi
-const PRICES = {
-  1: { priceId: 'price_1TCbPFFyO2awdoWus3f0HLNc', amount: 1497, name: 'La tua persona ideale' },
-  2: { priceId: 'price_1TCbR2FyO2awdoWukgK9xXXL', amount: 1997, name: 'La tua relazione ideale' },
-  3: { priceId: 'price_1TCbWuFyO2awdoWujLHgaMwr', amount: 1997, name: 'I codici segreti della mente di LUI e LEI' },
-  4: { priceId: 'price_1TCbS9FyO2awdoWukyiTXxBq', amount: 2497, name: 'Guida al potere sociale COMPLETA' },
-  5: { priceId: 'price_1TCbQGFyO2awdoWuOOm7QWtR', amount: 4997, name: 'Convincimi ULTIMATE' },
-};
- 
-// Prezzi upsell al 50%
-const UPSELL_AMOUNTS = {
-  1: Math.round(1497 / 2), // 7,49
-  2: Math.round(1997 / 2), // 9,99
-  3: Math.round(1997 / 2), // 9,99
-  4: Math.round(2497 / 2), // 12,49
-  5: Math.round(4997 / 2), // 24,99
-};
- 
-module.exports = async (req, res) => {
-  // CORS
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
- 
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
- 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
- 
-  try {
-    const { bookId, upsellId } = req.body;
- 
-    if (!bookId || !PRICES[bookId]) {
-      return res.status(400).json({ error: 'Libro non valido' });
-    }
- 
-    const mainBook = PRICES[bookId];
-    let totalAmount = mainBook.amount;
-    let description = mainBook.name;
-    const metadata = { mainBookId: String(bookId) };
- 
-    // Se c'è upsell aggiunge il 50% del secondo libro
-    if (upsellId && PRICES[upsellId]) {
-      const upsellAmount = UPSELL_AMOUNTS[upsellId];
-      totalAmount += upsellAmount;
-      description += ` + ${PRICES[upsellId].name} (−50%)`;
-      metadata.upsellBookId = String(upsellId);
-      metadata.upsellAmount = String(upsellAmount);
-    }
+ }
  
     const paymentIntent = await stripe.paymentIntents.create({
       amount: totalAmount,
       currency: 'eur',
-      description,
-      metadata,
-      automatic_payment_methods: { 
+      description: description,
+      metadata: metadata,
+      automatic_payment_methods: {
         enabled: true,
         allow_redirects: 'never'
       },
@@ -69,14 +14,9 @@ module.exports = async (req, res) => {
     return res.status(200).json({
       clientSecret: paymentIntent.client_secret,
       amount: totalAmount,
-      description,
+      description: description,
     });
  
-  } catch (error) {
-    console.error('Stripe error:', error);
-    return res.status(500).json({ error: error.message });
-  }
-};
   } catch (error) {
     console.error('Stripe error:', error);
     return res.status(500).json({ error: error.message });
