@@ -20,7 +20,7 @@
     --border: #E0D8CC;
     --white: #FFFFFF;
   }
-
+ 
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html { scroll-behavior: smooth; }
   body {
@@ -31,7 +31,7 @@
     line-height: 1.6;
     overflow-x: hidden;
   }
-
+ 
   /* ── HEADER ── */
   .site-header {
     background: var(--cream);
@@ -52,7 +52,7 @@
   .logo-circle { width: 42px; height: 42px; border-radius: 50%; overflow: hidden; flex-shrink: 0; background: var(--ink); }
   .logo-circle img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
   .header-spacer { width: 30px; }
-
+ 
   /* ── NAV DRAWER ── */
   .nav-drawer { position: fixed; inset: 0; z-index: 300; pointer-events: none; }
   .nav-drawer-overlay { position: absolute; inset: 0; background: rgba(24,18,16,0.55); opacity: 0; transition: opacity 0.3s ease; backdrop-filter: blur(3px); }
@@ -67,12 +67,12 @@
   .nav-links li a { display: flex; align-items: center; gap: 13px; padding: 15px 26px; color: rgba(245,240,232,0.72); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s, background 0.2s; border-left: 2px solid transparent; }
   .nav-links li a:hover { color: var(--cream); background: rgba(255,255,255,0.04); border-left-color: var(--gold); }
   .nav-icon { font-size: 16px; width: 20px; text-align: center; opacity: 0.7; }
-
+ 
   /* ── HERO ── */
   .hero { padding: 32px 22px 28px; text-align: center; }
   .hero h1 { font-size: clamp(24px, 7vw, 38px); font-weight: 700; line-height: 1.2; letter-spacing: -0.5px; color: var(--ink); }
   .hero h1 em { font-style: italic; font-weight: 600; color: var(--wine); }
-
+ 
   /* ── PROOF ── */
   .proof-band { background: var(--ink); padding: 20px 14px; }
   .proof-band-inner { display: grid; grid-template-columns: repeat(3,1fr); text-align: center; }
@@ -80,14 +80,14 @@
   .proof-item + .proof-item { border-left: 1px solid rgba(201,168,76,0.2); }
   .proof-stat { font-size: 24px; font-weight: 700; color: var(--gold); line-height: 1; margin-bottom: 4px; }
   .proof-label { font-size: 10px; color: rgba(245,240,232,0.4); line-height: 1.4; }
-
+ 
   /* ── BOOKS HEADING ── */
   .books-heading { padding: 30px 18px 6px; text-align: center; }
   .books-heading h2 { font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); }
-
+ 
   /* ── BOOKS SECTION ── */
   .books-section { padding: 14px 14px 28px; display: flex; flex-direction: column; gap: 14px; max-width: 560px; margin: 0 auto; }
-
+ 
   /* ── BOOK CARD — cover LEFT, text RIGHT ── */
   .book-card {
     background: var(--white);
@@ -106,7 +106,7 @@
   }
   .book-card.visible { opacity: 1; transform: translateY(0); }
   .book-card:active { transform: scale(0.99); }
-
+ 
   /* Cover — LEFT */
   .book-cover-area {
     position: relative;
@@ -136,7 +136,7 @@
   }
   .cover-spine-title { font-size: 7.5px; font-weight: 700; color: rgba(245,240,232,0.92); line-height: 1.25; position: relative; z-index: 1; }
   .cover-spine-brand { font-size: 6.5px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(245,240,232,0.4); margin-top: 5px; position: relative; z-index: 1; }
-
+ 
   /* Info — RIGHT */
   .book-info {
     padding: 14px 14px 14px 12px;
@@ -146,14 +146,14 @@
   .book-tag { display: inline-block; font-size: 9px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--wine); background: rgba(123,74,45,0.08); padding: 3px 8px; border-radius: 20px; margin-bottom: 6px; width: fit-content; }
   .book-title { font-size: 15px; font-weight: 700; line-height: 1.2; letter-spacing: -0.2px; color: var(--ink); margin-bottom: 5px; }
   .book-tagline { font-size: 11.5px; color: var(--muted); line-height: 1.5; flex: 1; }
-
+ 
   .book-bottom {
     display: flex; align-items: center;
     justify-content: space-between;
     margin-top: 10px; gap: 8px;
   }
   .book-price { font-size: 21px; font-weight: 700; color: var(--ink); letter-spacing: -0.4px; line-height: 1; }
-
+ 
   .cta-btn {
     display: inline-flex; align-items: center; justify-content: center;
     padding: 9px 15px;
@@ -167,7 +167,7 @@
     white-space: nowrap; -webkit-appearance: none;
   }
   .cta-btn:active { transform: scale(0.97); background: var(--wine-light); }
-
+ 
   /* ── BUNDLE CARD ── */
   .bundle-card { grid-template-columns: 1fr; border: 2px solid var(--gold); background: linear-gradient(160deg,#FFFEF9 0%,#FDF8EE 100%); min-height: auto; cursor: pointer; }
   .bundle-ribbon { position: absolute; top: -1px; right: 18px; background: var(--gold); color: var(--ink); font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 12px; border-radius: 0 0 8px 8px; z-index: 5; }
@@ -189,13 +189,13 @@
   .discount-badge { background: var(--wine); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 20px; }
   .bundle-btn { width: 100%; padding: 14px; font-size: 12px; letter-spacing: 1.5px; background: var(--ink); box-shadow: 0 4px 14px rgba(24,18,16,0.2); border-radius: 12px; }
   .bundle-btn:active { background: #2A1A08; }
-
+ 
   /* ── SIDE TAB ── */
   .side-tab { position: fixed; right: 0; top: 50%; transform: translateY(-50%); z-index: 150; display: flex; align-items: stretch; cursor: pointer; filter: drop-shadow(-3px 0 10px rgba(24,18,16,0.15)); }
   .side-tab-label { writing-mode: vertical-rl; text-orientation: mixed; background: var(--wine); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 1px; padding: 14px 7px; border-radius: 10px 0 0 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: background 0.2s; }
   .side-tab:hover .side-tab-label { background: var(--wine-light); }
   .side-tab-badge { writing-mode: horizontal-tb; background: var(--gold); color: var(--ink); font-size: 10px; font-weight: 800; padding: 3px 5px; border-radius: 4px; line-height: 1; }
-
+ 
   /* ── SIDE PANEL ── */
   .side-panel { position: fixed; right: -340px; top: 0; bottom: 0; width: 320px; max-width: 85vw; background: var(--cream); z-index: 400; box-shadow: -4px 0 24px rgba(24,18,16,0.15); transition: right 0.35s cubic-bezier(0.4,0,0.2,1); display: flex; flex-direction: column; overflow-y: auto; }
   .side-panel.open { right: 0; }
@@ -221,7 +221,7 @@
   .side-cta { width: 100%; padding: 14px; background: var(--wine); color: #fff; border: none; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; border-radius: 12px; cursor: pointer; margin-bottom: 8px; -webkit-appearance: none; }
   .side-cta:active { background: var(--wine-light); }
   .side-skip { display: block; text-align: center; font-size: 12px; color: var(--muted); cursor: pointer; padding: 8px; border: none; background: none; width: 100%; text-decoration: underline; text-underline-offset: 3px; }
-
+ 
   /* ── UPSELL MODAL — notification style ── */
   .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(24,18,16,0.65); z-index: 1000; backdrop-filter: blur(6px); align-items: center; justify-content: center; padding: 24px; }
   .modal-overlay.active { display: flex; }
@@ -247,20 +247,19 @@
   .modal-cta { width: 100%; padding: 14px; background: var(--wine); color: #fff; border: none; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; border-radius: 12px; cursor: pointer; margin-bottom: 8px; -webkit-appearance: none; }
   .modal-cta:active { background: var(--wine-light); }
   .modal-skip { display: block; text-align: center; font-size: 11.5px; color: var(--muted); cursor: pointer; padding: 6px; border: none; background: none; width: 100%; text-decoration: underline; text-underline-offset: 3px; }
-
+ 
   /* ── PRODUCT PAGE (overlay) ── */
   .product-page {
     display: none;
     position: fixed;
     inset: 0;
     background: var(--cream);
-    z-index: 500;
+    z-index: 600;
     overflow-y: auto;
-    animation: slideInUp 0.3s ease forwards;
+    -webkit-overflow-scrolling: touch;
   }
   .product-page.active { display: block; }
-  @keyframes slideInUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
+ 
   .product-header {
     position: sticky;
     top: 0;
@@ -279,9 +278,9 @@
     line-height: 1; padding: 2px;
   }
   .product-header-title { font-size: 14px; font-weight: 700; color: var(--ink); line-height: 1.2; }
-
+ 
   .product-body { padding: 0 0 120px; max-width: 560px; margin: 0 auto; }
-
+ 
   /* Cover hero */
   .product-cover-hero {
     width: 100%; height: 220px;
@@ -313,23 +312,23 @@
   }
   .product-ebook-title { font-size: 11px; font-weight: 700; color: rgba(245,240,232,0.95); line-height: 1.3; position: relative; z-index: 1; }
   .product-ebook-brand { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: rgba(245,240,232,0.45); margin-top: 6px; position: relative; z-index: 1; }
-
+ 
   .product-content { padding: 20px 18px 0; }
   .product-tag { display: inline-block; font-size: 9px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--wine); background: rgba(123,74,45,0.08); padding: 3px 8px; border-radius: 20px; margin-bottom: 10px; }
   .product-title { font-size: clamp(22px, 5.5vw, 30px); font-weight: 700; line-height: 1.15; letter-spacing: -0.5px; margin-bottom: 6px; color: var(--ink); }
   .product-tagline { font-size: 14px; color: var(--muted); line-height: 1.55; margin-bottom: 20px; font-style: italic; }
-
+ 
   .product-section-title { font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; margin-top: 24px; }
-
+ 
   .product-description { font-size: 14px; color: var(--ink); line-height: 1.75; white-space: pre-line; margin-bottom: 6px; }
-
+ 
   .product-points { list-style: none; margin-bottom: 6px; }
   .product-points li { font-size: 13.5px; color: var(--ink); padding: 6px 0; display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; border-bottom: 1px solid var(--border); }
   .product-points li:last-child { border-bottom: none; }
   .product-points li::before { content: '✓'; color: var(--wine); font-weight: 700; font-size: 12px; margin-top: 2px; flex-shrink: 0; }
-
+ 
   .product-nb { font-size: 11px; color: var(--muted); font-style: italic; opacity: 0.65; margin-top: 16px; }
-
+ 
   /* Checkout bar — fixed at bottom */
   .checkout-bar {
     position: fixed;
@@ -361,13 +360,13 @@
     -webkit-appearance: none;
   }
   .checkout-cta:active { background: var(--wine-light); }
-
+ 
   /* ── MICRO NOTIFICATIONS ── */
   .micro-notif { position: fixed; bottom: 24px; left: 16px; z-index: 450; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
   .notif-pill { background: var(--ink); color: var(--cream); padding: 13px 18px; border-radius: 16px; font-size: 13.5px; font-weight: 500; box-shadow: 0 6px 24px rgba(24,18,16,0.28); display: flex; align-items: center; gap: 11px; opacity: 0; transform: translateX(-20px); transition: opacity 0.4s ease, transform 0.4s ease; max-width: 270px; line-height: 1.35; border: 1px solid rgba(255,255,255,0.07); }
   .notif-pill.show { opacity: 1; transform: translateX(0); }
   .notif-icon { font-size: 18px; flex-shrink: 0; }
-
+ 
   /* ── REVIEWS ── */
   #recensioni { padding: 32px 0 18px; overflow: hidden; }
   .reviews-heading { text-align: center; padding: 0 18px 20px; }
@@ -387,7 +386,7 @@
   .review-avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; flex-shrink: 0; }
   .review-name { font-size: 11.5px; font-weight: 600; color: var(--ink); }
   .review-book { font-size: 10px; color: var(--muted); }
-
+ 
   /* ── NEWSLETTER ── */
   #newsletter { background: var(--ink); padding: 44px 18px; text-align: center; position: relative; overflow: hidden; }
   #newsletter::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 70% at 50% 50%, rgba(201,168,76,0.07) 0%, transparent 70%); pointer-events: none; }
@@ -400,18 +399,18 @@
   .newsletter-form button { padding: 14px; background: var(--gold); color: var(--ink); border: none; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 11px; -webkit-appearance: none; }
   .newsletter-form button:active { background: var(--gold-pale); }
   .newsletter-micro { margin-top: 9px; font-size: 10.5px; color: rgba(245,240,232,0.22); position: relative; }
-
+ 
   /* FOOTER */
   footer { background: var(--ink); padding: 22px 18px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); }
   footer p { font-size: 11.5px; color: rgba(245,240,232,0.25); }
   footer a { color: rgba(245,240,232,0.25); text-decoration: none; }
-
+ 
   @media (min-width: 600px) {
     .newsletter-form { flex-direction: row; }
     .newsletter-form input { flex: 1; border-radius: 11px 0 0 11px; }
     .newsletter-form button { border-radius: 0 11px 11px 0; }
   }
-
+ 
   /* ── PAYMENT MODAL ── */
   .payment-overlay {
     display: none;
@@ -425,7 +424,7 @@
     padding: 20px;
   }
   .payment-overlay.active { display: flex; }
-
+ 
   .payment-modal {
     background: var(--cream);
     width: 100%;
@@ -435,7 +434,7 @@
     box-shadow: 0 20px 60px rgba(24,18,16,0.35);
     animation: popIn 0.36s cubic-bezier(0.34,1.56,0.64,1) forwards;
   }
-
+ 
   .payment-modal-header {
     background: var(--ink);
     padding: 18px 20px;
@@ -443,21 +442,21 @@
     align-items: center;
     justify-content: space-between;
   }
-
+ 
   .payment-modal-header h3 {
     font-size: 16px;
     font-weight: 700;
     color: var(--cream);
     line-height: 1.2;
   }
-
+ 
   .payment-modal-header .payment-amount {
     font-size: 20px;
     font-weight: 700;
     color: var(--gold);
     white-space: nowrap;
   }
-
+ 
   .payment-close {
     background: none;
     border: none;
@@ -467,9 +466,9 @@
     flex-shrink: 0;
     margin-left: 12px;
   }
-
+ 
   .payment-body { padding: 20px; }
-
+ 
   .payment-summary {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -480,17 +479,17 @@
     color: var(--muted);
     line-height: 1.5;
   }
-
+ 
   .payment-summary strong { color: var(--ink); font-weight: 600; }
-
+ 
   #stripe-elements-container {
     margin-bottom: 16px;
   }
-
+ 
   #payment-element {
     min-height: 60px;
   }
-
+ 
   .pay-btn {
     width: 100%;
     padding: 16px;
@@ -511,10 +510,10 @@
     gap: 8px;
     -webkit-appearance: none;
   }
-
+ 
   .pay-btn:disabled { opacity: 0.6; cursor: not-allowed; }
   .pay-btn:not(:disabled):active { background: var(--wine-light); }
-
+ 
   .pay-btn .spinner {
     width: 16px; height: 16px;
     border: 2px solid rgba(255,255,255,0.4);
@@ -523,12 +522,12 @@
     animation: spin 0.7s linear infinite;
     display: none;
   }
-
+ 
   .pay-btn.loading .spinner { display: block; }
   .pay-btn.loading .btn-text { display: none; }
-
+ 
   @keyframes spin { to { transform: rotate(360deg); } }
-
+ 
   .payment-error {
     color: #c0392b;
     font-size: 13px;
@@ -536,7 +535,7 @@
     margin-top: 10px;
     display: none;
   }
-
+ 
   .payment-secure {
     display: flex;
     align-items: center;
@@ -547,28 +546,28 @@
     color: var(--muted);
     opacity: 0.7;
   }
-
+ 
   /* Success screen */
   .payment-success {
     display: none;
     padding: 32px 20px;
     text-align: center;
   }
-
+ 
   .payment-success.active { display: block; }
-
+ 
   .success-icon {
     font-size: 48px;
     margin-bottom: 14px;
   }
-
+ 
   .payment-success h3 {
     font-size: 20px;
     font-weight: 700;
     color: var(--ink);
     margin-bottom: 8px;
   }
-
+ 
   .payment-success p {
     font-size: 14px;
     color: var(--muted);
@@ -578,7 +577,7 @@
 <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
-
+ 
 <!-- HEADER -->
 <header class="site-header">
   <button class="hamburger" id="hamburgerBtn" onclick="toggleDrawer()">
@@ -587,7 +586,7 @@
   <div class="logo-circle"><img src="logo.jpg" alt="Convincimi"></div>
   <div class="header-spacer"></div>
 </header>
-
+ 
 <!-- NAV DRAWER -->
 <nav class="nav-drawer" id="navDrawer">
   <div class="nav-drawer-overlay" onclick="closeDrawer()"></div>
@@ -601,12 +600,12 @@
     </ul>
   </div>
 </nav>
-
+ 
 <!-- HERO -->
 <section class="hero">
   <h1>Meriti di vivere una relazione<br>che ti renda <em>felice</em></h1>
 </section>
-
+ 
 <!-- PROOF -->
 <div class="proof-band">
   <div class="proof-band-inner">
@@ -615,13 +614,13 @@
     <div class="proof-item"><div class="proof-stat">5</div><div class="proof-label">guide digitali</div></div>
   </div>
 </div>
-
+ 
 <!-- BOOKS LABEL -->
 <div class="books-heading" id="libri"><h2>I nostri libri</h2></div>
-
+ 
 <!-- BOOKS -->
 <section class="books-section">
-
+ 
   <!-- BOOK 1 -->
   <article class="book-card" data-book="1" onclick="openProductPage(1)">
     <div class="book-cover-area">
@@ -639,7 +638,7 @@
       </div>
     </div>
   </article>
-
+ 
   <!-- BOOK 2 -->
   <article class="book-card" data-book="2" onclick="openProductPage(2)">
     <div class="book-cover-area">
@@ -657,7 +656,7 @@
       </div>
     </div>
   </article>
-
+ 
   <!-- BUNDLE (3°) -->
   <article class="book-card bundle-card" data-book="5" onclick="openProductPage(5)">
     <div class="bundle-ribbon">★ Best Value</div>
@@ -680,7 +679,7 @@
       <button class="cta-btn bundle-btn" onclick="event.stopPropagation();openProductPage(5)">Scopri il pacchetto →</button>
     </div>
   </article>
-
+ 
   <!-- BOOK 3 -->
   <article class="book-card" data-book="3" onclick="openProductPage(3)">
     <div class="book-cover-area">
@@ -698,7 +697,7 @@
       </div>
     </div>
   </article>
-
+ 
   <!-- BOOK 4 -->
   <article class="book-card" data-book="4" onclick="openProductPage(4)">
     <div class="book-cover-area">
@@ -716,9 +715,9 @@
       </div>
     </div>
   </article>
-
+ 
 </section>
-
+ 
 <!-- SIDE TAB -->
 <div class="side-tab" onclick="openSidePanel()">
   <div class="side-tab-label">
@@ -726,7 +725,7 @@
     TUTTI I LIBRI
   </div>
 </div>
-
+ 
 <!-- SIDE PANEL -->
 <div class="side-panel-overlay" id="sidePanelOverlay" onclick="closeSidePanel()"></div>
 <div class="side-panel" id="sidePanel">
@@ -755,7 +754,7 @@
     <button class="side-skip" onclick="closeSidePanel()">No grazie</button>
   </div>
 </div>
-
+ 
 <!-- REVIEWS -->
 <section id="recensioni">
   <div class="reviews-heading">
@@ -784,7 +783,7 @@
     </div>
   </div>
 </section>
-
+ 
 <!-- NEWSLETTER -->
 <section id="newsletter">
   <h2>Psicologia delle relazioni,<br><em>ogni settimana gratis</em></h2>
@@ -795,12 +794,12 @@
   </form>
   <p class="newsletter-micro">Nessuno spam. Puoi cancellarti quando vuoi.</p>
 </section>
-
+ 
 <!-- FOOTER -->
 <footer>
   <p>© 2025 Convincimi · <a href="#">Privacy</a> · <a href="#">Termini</a> · <a href="#">Contatti</a></p>
 </footer>
-
+ 
 <!-- PAYMENT MODAL -->
 <div class="payment-overlay" id="paymentOverlay">
   <div class="payment-modal" id="paymentModal">
@@ -828,10 +827,10 @@
     </div>
   </div>
 </div>
-
+ 
 <!-- MICRO NOTIFICATIONS -->
 <div class="micro-notif" id="microNotif"></div>
-
+ 
 <!-- PRODUCT PAGES -->
 <div class="product-page" id="productPage">
   <div class="product-header">
@@ -861,7 +860,7 @@
     </div>
   </div>
 </div>
-
+ 
 <!-- CHECKOUT BAR (shown on product page) -->
 <div class="checkout-bar hidden" id="checkoutBar">
   <div class="checkout-price-block">
@@ -870,7 +869,7 @@
   </div>
   <button class="checkout-cta" id="checkoutCta">Acquista ora →</button>
 </div>
-
+ 
 <!-- UPSELL MODAL -->
 <div class="modal-overlay" id="upsellModal">
   <div class="modal">
@@ -898,7 +897,7 @@
     </div>
   </div>
 </div>
-
+ 
 <script>
 // ── DATA ──
 const books = {
@@ -964,18 +963,18 @@ const books = {
     link:"#checkout-bundle"
   }
 };
-
+ 
 const upsellReasons={
   "1→2":"Una volta che capisci chi cercare, il passo più difficile è non sabotare la relazione quando arriva. Questa guida ti aiuta a non ripetere gli stessi errori.",
   "2→3":"Hai imparato a gestire la relazione — ora scopri come funziona davvero la testa di chi hai accanto. Meno incomprensioni, più controllo.",
   "3→1":"Ora che capisci come funziona la mente dell'altro, il vero salto è capire cosa vuoi tu — così smetti di attirare sempre lo stesso tipo.",
   "4→3":"Il potere nelle relazioni si esercita prima di tutto con il partner. Questa guida ti dà la chiave per leggere la sua mente."
 };
-
+ 
 // ── DRAWER ──
 function toggleDrawer(){const d=document.getElementById('navDrawer'),b=document.getElementById('hamburgerBtn');const o=d.classList.toggle('open');b.classList.toggle('open',o);document.body.style.overflow=o?'hidden':'';}
 function closeDrawer(){document.getElementById('navDrawer').classList.remove('open');document.getElementById('hamburgerBtn').classList.remove('open');document.body.style.overflow='';}
-
+ 
 // ── PRODUCT PAGE ──
 let currentProductId = null;
 function openProductPage(id){
@@ -983,7 +982,7 @@ function openProductPage(id){
   const b = books[id];
   const page = document.getElementById('productPage');
   const bar = document.getElementById('checkoutBar');
-
+ 
   document.getElementById('productHeaderTitle').textContent = b.title;
   document.getElementById('productTag').textContent = b.tag;
   document.getElementById('productTitle').textContent = b.title;
@@ -991,7 +990,7 @@ function openProductPage(id){
   document.getElementById('productDescription').textContent = b.description;
   document.getElementById('productNb').textContent = b.nb;
   document.getElementById('productMockupTitle').textContent = b.title;
-
+ 
   const coverImages = {
     1: 'cover1.png',
     2: 'cover2.png',
@@ -999,7 +998,7 @@ function openProductPage(id){
     4: 'cover4.png',
     5: 'cover5.png'
   };
-
+ 
   const bannerImages = {
     1: 'banner1.png',
     2: 'banner2.png',
@@ -1007,15 +1006,15 @@ function openProductPage(id){
     4: 'banner4.png',
     5: 'banner5.png'
   };
-
+ 
   const bg = document.getElementById('productCoverBg');
   bg.style.background = 'none';
   bg.style.padding = '0';
   bg.innerHTML = `<img src="${bannerImages[id]}" alt="${b.title}" style="width:100%;height:100%;object-fit:cover;display:block;">`;
-
+ 
   const mockup = document.getElementById('productMockup');
   mockup.style.display = 'none';
-
+ 
   // Points
   const wrap = document.getElementById('productPointsWrap');
   const ul = document.getElementById('productPoints');
@@ -1026,12 +1025,12 @@ function openProductPage(id){
   } else {
     wrap.style.display = 'none';
   }
-
+ 
   // Checkout bar
   const fmt = p => p.toFixed(2).replace('.',',')+' €';
   document.getElementById('checkoutPrice').textContent = fmt(b.price);
   const cta = document.getElementById('checkoutCta');
-
+ 
   if(id === 5){
     cta.textContent = 'Prendi il pacchetto →';
     cta.onclick = () => goToCheckout(5);
@@ -1039,23 +1038,23 @@ function openProductPage(id){
     cta.textContent = 'Acquista ora →';
     cta.onclick = () => triggerUpsell(id);
   }
-
+ 
   page.classList.add('active');
   bar.classList.remove('hidden');
   page.scrollTop = 0;
   document.body.style.overflow = 'hidden';
 }
-
+ 
 function closeProductPage(){
   document.getElementById('productPage').classList.remove('active');
   document.getElementById('checkoutBar').classList.add('hidden');
   document.body.style.overflow = '';
 }
-
+ 
 // ── UPSELL ──
 let currentBook=null,currentUpsell=null,timerInterval=null,timerSeconds=899;
 function fmt(p){return p.toFixed(2).replace('.',',')+' €';}
-
+ 
 function triggerUpsell(id){
   const uid = books[id].upsell;
   if(!uid){goToCheckout(id);return;}
@@ -1074,59 +1073,59 @@ function triggerUpsell(id){
   timerInterval=setInterval(()=>{timerSeconds--;if(timerSeconds<=0){clearInterval(timerInterval);document.getElementById('timerDisplay').textContent="scaduta";}else updateTimer();},1000);
   document.getElementById('upsellModal').classList.add('active');
 }
-
+ 
 function updateTimer(){const m=Math.floor(timerSeconds/60),s=timerSeconds%60;document.getElementById('timerDisplay').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;}
 function closeModal(){document.getElementById('upsellModal').classList.remove('active');if(timerInterval)clearInterval(timerInterval);}
 function addBothToCart(){ openPaymentModal(currentBook, currentUpsell); closeModal(); }
 function proceedWithoutUpsell(){ openPaymentModal(currentBook, null); closeModal(); }
 function goToCheckout(id){ openPaymentModal(id, null); }
 document.getElementById('upsellModal').addEventListener('click',function(e){if(e.target===this)proceedWithoutUpsell();});
-
+ 
 // ── STRIPE PAYMENT ──
 const stripe = Stripe('pk_live_51SNsVxFy02awdoWu2til2JsyR505TiLnw3yu1B3EIjiuG88gEALFxJwopG5xmFVnrexN071yIhlHSMdBHf8Y1srq00avLuDeTQ');
 let stripeElements = null;
 let currentPaymentBookId = null;
 let currentPaymentUpsellId = null;
-
+ 
 async function openPaymentModal(bookId, upsellId) {
   currentPaymentBookId = bookId;
   currentPaymentUpsellId = upsellId;
-
+ 
   const overlay = document.getElementById('paymentOverlay');
   const body = document.getElementById('paymentBody');
   const success = document.getElementById('paymentSuccess');
   const errorEl = document.getElementById('paymentError');
   const payBtn = document.getElementById('payBtn');
-
+ 
   body.style.display = 'block';
   success.classList.remove('active');
   errorEl.style.display = 'none';
   payBtn.classList.remove('loading');
   payBtn.disabled = false;
-
+ 
   overlay.classList.add('active');
   document.body.style.overflow = 'hidden';
-
+ 
   // Close any open product page
   closeProductPage();
-
+ 
   try {
     const res = await fetch('/api/create-payment-intent', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ bookId, upsellId })
     });
-
+ 
     const data = await res.json();
-
+ 
     if (!res.ok) throw new Error(data.error || 'Errore del server');
-
+ 
     // Update UI
     const euros = (data.amount / 100).toFixed(2).replace('.', ',') + ' €';
     document.getElementById('paymentAmount').textContent = euros;
     document.getElementById('paymentTitle').textContent = upsellId ? 'Pacchetto acquisto' : 'Completa l\'acquisto';
     document.getElementById('paymentSummary').innerHTML = `<strong>Acquisto:</strong> ${data.description}`;
-
+ 
     // Init Stripe Elements
     stripeElements = stripe.elements({
       clientSecret: data.clientSecret,
@@ -1142,25 +1141,25 @@ async function openPaymentModal(bookId, upsellId) {
         }
       }
     });
-
+ 
     const paymentElement = stripeElements.create('payment');
     document.getElementById('payment-element').innerHTML = '';
     paymentElement.mount('#payment-element');
-
+ 
   } catch (err) {
     document.getElementById('paymentError').textContent = err.message;
     document.getElementById('paymentError').style.display = 'block';
   }
 }
-
+ 
 async function submitPayment() {
   const payBtn = document.getElementById('payBtn');
   const errorEl = document.getElementById('paymentError');
-
+ 
   payBtn.classList.add('loading');
   payBtn.disabled = true;
   errorEl.style.display = 'none';
-
+ 
   try {
     const { error } = await stripe.confirmPayment({
       elements: stripeElements,
@@ -1169,7 +1168,7 @@ async function submitPayment() {
       },
       redirect: 'if_required'
     });
-
+ 
     if (error) {
       errorEl.textContent = error.message;
       errorEl.style.display = 'block';
@@ -1188,7 +1187,7 @@ async function submitPayment() {
     payBtn.disabled = false;
   }
 }
-
+ 
 function closePaymentModal() {
   document.getElementById('paymentOverlay').classList.remove('active');
   document.body.style.overflow = '';
@@ -1197,11 +1196,11 @@ function closePaymentModal() {
     document.getElementById('payment-element').innerHTML = '';
   }
 }
-
+ 
 document.getElementById('paymentOverlay').addEventListener('click', function(e) {
   if (e.target === this) closePaymentModal();
 });
-
+ 
 // Check success on page load
 if (window.location.search.includes('success=true')) {
   setTimeout(() => {
@@ -1210,7 +1209,7 @@ if (window.location.search.includes('success=true')) {
     document.getElementById('paymentSuccess').classList.add('active');
   }, 500);
 }
-
+ 
 // ── SIDE PANEL ──
 let sidePanelTimer=null,sidePanelSecs=899;
 function openSidePanel(){
@@ -1223,7 +1222,7 @@ function openSidePanel(){
 }
 function closeSidePanel(){document.getElementById('sidePanel').classList.remove('open');document.getElementById('sidePanelOverlay').classList.remove('active');document.body.style.overflow='';if(sidePanelTimer)clearInterval(sidePanelTimer);}
 function updateSideTimer(){const m=Math.floor(sidePanelSecs/60),s=sidePanelSecs%60;document.getElementById('sidePanelTimer').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;}
-
+ 
 // ── MICRO NOTIFICATIONS ──
 const notifications=[
   {icon:"🔔",text:"Giulia da Vicenza ha appena acquistato"},
@@ -1251,7 +1250,7 @@ function showNextNotif(){
   },old?500:0);
 }
 setTimeout(()=>{showNextNotif();setInterval(showNextNotif,5000);},3000);
-
+ 
 // ── NEWSLETTER ──
 function handleNewsletterSubmit(e){
   e.preventDefault();
@@ -1259,7 +1258,7 @@ function handleNewsletterSubmit(e){
   btn.textContent="✓ Iscritto";btn.style.background="#2A5A2A";
   e.target.querySelector('input').disabled=true;
 }
-
+ 
 // ── SCROLL REVEAL ──
 const obs=new IntersectionObserver(entries=>{entries.forEach(en=>{if(en.isIntersecting){en.target.classList.add('visible');obs.unobserve(en.target);}});},{threshold:0.06});
 document.querySelectorAll('.book-card').forEach(c=>obs.observe(c));
