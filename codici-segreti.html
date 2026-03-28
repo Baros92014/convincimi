@@ -8,99 +8,86 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --cream: #fbf6f0;
-    --ink: #1A1208;
-    --wine: #7B3D1E;
-    --wine-light: #9A5030;
-    --gold: #C9A84C;
-    --muted: #7A6F60;
-    --surface: #F2F0EB;
-    --border: #E0D8CC;
-    --white: #FFFFFF;
-  }
-  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  html { scroll-behavior:smooth; }
-  body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--cream); color:var(--ink); font-size:15px; line-height:1.6; overflow-x:hidden; }
-
-  /* HEADER */
-  .site-header { background:var(--cream); padding:14px 18px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); }
-  .back-btn { background:none; border:none; font-size:22px; cursor:pointer; color:var(--ink); padding:2px; line-height:1; text-decoration:none; display:flex; align-items:center; gap:8px; font-size:14px; font-weight:600; color:var(--wine); }
-  .logo-circle { width:40px; height:40px; border-radius:50%; overflow:hidden; }
-  .logo-circle img { width:100%; height:100%; object-fit:cover; }
-  .header-spacer { width:60px; }
-
-  /* BANNER */
-  .product-banner { width:100%; max-height:260px; overflow:hidden; }
-  .product-banner img { width:100%; height:100%; object-fit:cover; object-position:center top; display:block; }
-
-  /* CONTENT */
-  .product-body { max-width:560px; margin:0 auto; padding:20px 18px 140px; }
-  .product-tag { display:inline-block; font-size:9px; font-weight:600; letter-spacing:1.2px; text-transform:uppercase; color:var(--wine); background:rgba(123,74,45,0.08); padding:3px 8px; border-radius:20px; margin-bottom:10px; }
-  .product-title { font-size:clamp(22px,5.5vw,30px); font-weight:700; line-height:1.15; letter-spacing:-0.5px; margin-bottom:6px; }
-  .product-tagline { font-size:14px; color:var(--muted); line-height:1.55; margin-bottom:20px; font-style:italic; }
-  .product-section-title { font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-bottom:10px; margin-top:22px; }
-  .product-description { font-size:14px; color:var(--ink); line-height:1.75; white-space:pre-line; margin-bottom:6px; }
-  .product-points { list-style:none; margin-bottom:6px; }
-  .product-points li { font-size:13.5px; color:var(--ink); padding:6px 0; display:flex; align-items:flex-start; gap:10px; line-height:1.5; border-bottom:1px solid var(--border); }
-  .product-points li:last-child { border-bottom:none; }
-  .product-points li::before { content:'✓'; color:var(--wine); font-weight:700; font-size:12px; margin-top:2px; flex-shrink:0; }
-  .product-nb { font-size:11px; color:var(--muted); font-style:italic; opacity:0.65; margin-top:16px; }
-
-  /* CHECKOUT BAR */
-  .checkout-bar { position:fixed; bottom:0; left:0; right:0; background:var(--white); border-top:1px solid var(--border); padding:14px 18px; display:flex; align-items:center; justify-content:space-between; gap:12px; z-index:100; box-shadow:0 -4px 20px rgba(24,18,16,0.1); }
-  .checkout-price-block { display:flex; flex-direction:column; gap:1px; }
-  .checkout-price { font-size:24px; font-weight:700; color:var(--ink); letter-spacing:-0.5px; line-height:1; }
-  .checkout-label { font-size:10px; color:var(--muted); }
-  .checkout-cta { flex:1; max-width:220px; padding:15px 20px; background:var(--wine); color:#fff; font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; font-weight:700; letter-spacing:1px; text-transform:uppercase; border-radius:12px; cursor:pointer; border:none; box-shadow:0 4px 16px rgba(123,74,45,0.3); -webkit-appearance:none; }
-  .checkout-cta:active { background:var(--wine-light); }
-
-  
-  /* MODAL */
-  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(24,18,16,0.45); z-index:1000; backdrop-filter:blur(4px); align-items:center; justify-content:center; padding:24px; }
-  .modal-overlay.active { display:flex; }
-  .modal { background:#fff; width:100%; max-width:360px; border-radius:20px; overflow:hidden; box-shadow:0 24px 60px rgba(24,18,16,0.18),0 8px 24px rgba(24,18,16,0.08); animation:popIn 0.36s cubic-bezier(0.34,1.56,0.64,1) forwards; }
-  @keyframes popIn { from { opacity:0; transform:scale(0.88) translateY(10px); } to { opacity:1; transform:scale(1) translateY(0); } }
-  .modal-body { padding:18px 18px 20px; }
-  .modal-badge-top { display:inline-block; background:#1a472a; color:#fff; font-size:10px; font-weight:700; letter-spacing:0.5px; padding:4px 10px; border-radius:20px; margin-bottom:10px; }
-  .modal-title { font-size:17px; font-weight:700; color:var(--ink); margin-bottom:6px; line-height:1.25; }
-  .modal-reason { font-size:13px; color:var(--muted); line-height:1.6; margin-bottom:14px; }
-  .modal-book { display:grid; grid-template-columns:80px 1fr; gap:12px; align-items:center; padding:12px; background:var(--surface); border-radius:14px; margin-bottom:14px; border:1px solid var(--border); }
-  .modal-book-cover { width:100%; aspect-ratio:2/3; border-radius:8px; overflow:hidden; box-shadow:2px 3px 12px rgba(24,18,16,0.15); }
-  .modal-stars { color:#f4a623; font-size:14px; letter-spacing:1px; margin-bottom:5px; }
-  .modal-book-info h4 { font-size:13px; font-weight:700; margin-bottom:8px; line-height:1.3; color:var(--ink); }
-  .modal-price-row { display:flex; align-items:center; gap:7px; }
-  .modal-price-new { font-size:22px; font-weight:700; color:var(--wine); }
-  .modal-cta { width:100%; padding:14px; background:var(--wine); color:#fff; border:none; font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; font-weight:700; letter-spacing:0.5px; border-radius:12px; cursor:pointer; margin-bottom:9px; -webkit-appearance:none; }
-  .modal-cta:active { background:var(--wine-light); }
-  .modal-skip { display:block; text-align:center; font-size:12px; color:var(--muted); cursor:pointer; padding:6px; border:none; background:none; width:100%; text-decoration:underline; text-underline-offset:3px; }
-
-  /* PAYMENT */
-  .payment-overlay { display:none; position:fixed; inset:0; background:rgba(24,18,16,0.75); z-index:2000; backdrop-filter:blur(6px); align-items:center; justify-content:center; padding:20px; }
-  .payment-overlay.active { display:flex; }
-  .payment-modal { background:var(--cream); width:100%; max-width:420px; border-radius:20px; overflow:hidden; box-shadow:0 20px 60px rgba(24,18,16,0.35); animation:popIn 0.36s cubic-bezier(0.34,1.56,0.64,1) forwards; }
-  .payment-modal-header { background:var(--ink); padding:18px 20px; display:flex; align-items:center; justify-content:space-between; }
-  .payment-modal-header h3 { font-size:16px; font-weight:700; color:var(--cream); line-height:1.2; }
-  .payment-modal-header .payment-amount { font-size:20px; font-weight:700; color:var(--gold); white-space:nowrap; }
-  .payment-close { background:none; border:none; color:rgba(245,240,232,0.5); font-size:20px; cursor:pointer; flex-shrink:0; margin-left:12px; }
-  .payment-body { padding:20px; }
-  .payment-summary { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px 14px; margin-bottom:18px; font-size:13px; color:var(--muted); line-height:1.5; }
-  .payment-summary strong { color:var(--ink); font-weight:600; }
-  #payment-element { min-height:60px; margin-bottom:16px; }
-  .pay-btn { width:100%; padding:16px; background:var(--wine); color:#fff; border:none; font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; font-weight:700; letter-spacing:1px; text-transform:uppercase; border-radius:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; -webkit-appearance:none; }
-  .pay-btn:disabled { opacity:0.6; cursor:not-allowed; }
-  .pay-btn:not(:disabled):active { background:var(--wine-light); }
-  .pay-btn .spinner { width:16px; height:16px; border:2px solid rgba(255,255,255,0.4); border-top-color:#fff; border-radius:50%; animation:spin 0.7s linear infinite; display:none; }
-  .pay-btn.loading .spinner { display:block; }
-  .pay-btn.loading .btn-text { display:none; }
-  @keyframes spin { to { transform:rotate(360deg); } }
-  .payment-error { color:#c0392b; font-size:13px; text-align:center; margin-top:10px; display:none; }
-  .payment-secure { display:flex; align-items:center; justify-content:center; gap:6px; margin-top:12px; font-size:11px; color:var(--muted); opacity:0.7; }
-  .payment-success { display:none; padding:32px 20px; text-align:center; }
-  .payment-success.active { display:block; }
-  .success-icon { font-size:48px; margin-bottom:14px; }
-  .payment-success h3 { font-size:20px; font-weight:700; color:var(--ink); margin-bottom:8px; }
-  .payment-success p { font-size:14px; color:var(--muted); line-height:1.6; }
+:root {
+  --cream: #fbf6f0;
+  --ink: #1A1208;
+  --wine: #7B3D1E;
+  --wine-light: #9A5030;
+  --gold: #C9A84C;
+  --muted: #7A6F60;
+  --surface: #F2F0EB;
+  --border: #E0D8CC;
+  --white: #FFFFFF;
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { scroll-behavior:smooth; }
+body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--cream); color:var(--ink); font-size:15px; line-height:1.6; overflow-x:hidden; }
+.site-header { background:var(--cream); padding:14px 18px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); position:sticky; top:0; z-index:50; }
+.back-btn { font-size:14px; font-weight:600; color:var(--wine); text-decoration:none; display:flex; align-items:center; gap:6px; }
+.logo-circle { width:40px; height:40px; border-radius:50%; overflow:hidden; }
+.logo-circle img { width:100%; height:100%; object-fit:cover; }
+.header-spacer { width:60px; }
+.product-banner { width:100%; max-height:260px; overflow:hidden; }
+.product-banner img { width:100%; display:block; object-fit:cover; object-position:center top; }
+.product-body { max-width:560px; margin:0 auto; padding:20px 18px 140px; }
+.product-tag { display:inline-block; font-size:9px; font-weight:600; letter-spacing:1.2px; text-transform:uppercase; color:var(--wine); background:rgba(123,74,45,0.08); padding:3px 8px; border-radius:20px; margin-bottom:10px; }
+.product-title { font-size:clamp(22px,5.5vw,30px); font-weight:700; line-height:1.15; letter-spacing:-0.5px; margin-bottom:6px; }
+.product-tagline { font-size:14px; color:var(--muted); line-height:1.55; margin-bottom:20px; font-style:italic; }
+.section-title { font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-bottom:10px; margin-top:22px; }
+.product-description { font-size:14px; color:var(--ink); line-height:1.75; margin-bottom:6px; }
+.product-points { list-style:none; margin-bottom:6px; }
+.product-points li { font-size:13.5px; color:var(--ink); padding:6px 0; display:flex; align-items:flex-start; gap:10px; line-height:1.5; border-bottom:1px solid var(--border); }
+.product-points li:last-child { border-bottom:none; }
+.product-points li::before { content:'✓'; color:var(--wine); font-weight:700; font-size:12px; margin-top:2px; flex-shrink:0; }
+.product-nb { font-size:11px; color:var(--muted); font-style:italic; opacity:0.65; margin-top:16px; }
+.checkout-bar { position:fixed; bottom:0; left:0; right:0; background:var(--white); border-top:1px solid var(--border); padding:14px 18px; display:flex; align-items:center; justify-content:space-between; gap:12px; z-index:100; box-shadow:0 -4px 20px rgba(24,18,16,0.1); }
+.checkout-price-block { display:flex; flex-direction:column; gap:1px; }
+.checkout-price { font-size:24px; font-weight:700; color:var(--ink); letter-spacing:-0.5px; line-height:1; }
+.checkout-label { font-size:10px; color:var(--muted); }
+.checkout-cta { flex:1; max-width:220px; padding:15px 20px; background:var(--wine); color:#fff; font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; font-weight:700; letter-spacing:1px; text-transform:uppercase; border-radius:12px; cursor:pointer; border:none; box-shadow:0 4px 16px rgba(123,74,45,0.3); -webkit-appearance:none; }
+.checkout-cta:active { background:var(--wine-light); }
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(24,18,16,0.45); z-index:1000; backdrop-filter:blur(4px); align-items:center; justify-content:center; padding:24px; }
+.modal-overlay.active { display:flex; }
+.modal { background:#fff; width:100%; max-width:360px; border-radius:20px; overflow:hidden; box-shadow:0 24px 60px rgba(24,18,16,0.18),0 8px 24px rgba(24,18,16,0.08); animation:popIn 0.36s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+@keyframes popIn { from { opacity:0; transform:scale(0.88) translateY(10px); } to { opacity:1; transform:scale(1) translateY(0); } }
+.modal-body { padding:18px 18px 20px; }
+.modal-badge-top { display:inline-block; background:#1a472a; color:#fff; font-size:10px; font-weight:700; letter-spacing:0.5px; padding:4px 10px; border-radius:20px; margin-bottom:10px; }
+.modal-title { font-size:17px; font-weight:700; color:var(--ink); margin-bottom:6px; line-height:1.25; }
+.modal-reason { font-size:13px; color:var(--muted); line-height:1.6; margin-bottom:14px; }
+.modal-book { display:grid; grid-template-columns:80px 1fr; gap:12px; align-items:center; padding:12px; background:var(--surface); border-radius:14px; margin-bottom:14px; border:1px solid var(--border); }
+.modal-book-cover { width:100%; aspect-ratio:2/3; border-radius:8px; overflow:hidden; box-shadow:2px 3px 12px rgba(24,18,16,0.15); }
+.modal-book-cover img { width:100%; height:100%; object-fit:cover; display:block; }
+.modal-stars { color:#f4a623; font-size:14px; letter-spacing:1px; margin-bottom:5px; }
+.modal-book-info h4 { font-size:13px; font-weight:700; margin-bottom:8px; line-height:1.3; color:var(--ink); }
+.modal-price { font-size:22px; font-weight:700; color:var(--wine); }
+.modal-cta { width:100%; padding:14px; background:var(--wine); color:#fff; border:none; font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; font-weight:700; border-radius:12px; cursor:pointer; margin-bottom:9px; -webkit-appearance:none; }
+.modal-cta:active { background:var(--wine-light); }
+.modal-skip { display:block; text-align:center; font-size:12px; color:var(--muted); cursor:pointer; padding:6px; border:none; background:none; width:100%; text-decoration:underline; text-underline-offset:3px; }
+.payment-overlay { display:none; position:fixed; inset:0; background:rgba(24,18,16,0.75); z-index:2000; backdrop-filter:blur(6px); align-items:center; justify-content:center; padding:20px; }
+.payment-overlay.active { display:flex; }
+.payment-modal { background:var(--cream); width:100%; max-width:420px; border-radius:20px; overflow:hidden; box-shadow:0 20px 60px rgba(24,18,16,0.35); animation:popIn 0.36s cubic-bezier(0.34,1.56,0.64,1) forwards; max-height:90vh; overflow-y:auto; }
+.payment-header { background:var(--ink); padding:18px 20px; display:flex; align-items:center; justify-content:space-between; }
+.payment-header h3 { font-size:16px; font-weight:700; color:#fff; line-height:1.2; }
+.payment-header .amount { font-size:20px; font-weight:700; color:var(--gold); }
+.payment-close { background:none; border:none; color:rgba(255,255,255,0.5); font-size:20px; cursor:pointer; margin-left:12px; }
+.payment-body { padding:20px; }
+.payment-summary { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px 14px; margin-bottom:18px; font-size:13px; color:var(--muted); line-height:1.5; }
+.payment-summary strong { color:var(--ink); font-weight:600; }
+#payment-element { min-height:60px; margin-bottom:16px; }
+.pay-btn { width:100%; padding:16px; background:var(--wine); color:#fff; border:none; font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; font-weight:700; letter-spacing:1px; text-transform:uppercase; border-radius:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; -webkit-appearance:none; }
+.pay-btn:disabled { opacity:0.6; cursor:not-allowed; }
+.pay-btn:not(:disabled):active { background:var(--wine-light); }
+.spinner { width:16px; height:16px; border:2px solid rgba(255,255,255,0.4); border-top-color:#fff; border-radius:50%; animation:spin 0.7s linear infinite; display:none; }
+.pay-btn.loading .spinner { display:block; }
+.pay-btn.loading .btn-text { display:none; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.pay-error { color:#c0392b; font-size:13px; text-align:center; margin-top:10px; display:none; }
+.pay-secure { display:flex; align-items:center; justify-content:center; gap:6px; margin-top:12px; font-size:11px; color:var(--muted); opacity:0.7; }
+.pay-success { display:none; padding:32px 20px; text-align:center; }
+.pay-success.active { display:block; }
+.pay-success .icon { font-size:48px; margin-bottom:14px; }
+.pay-success h3 { font-size:20px; font-weight:700; color:var(--ink); margin-bottom:8px; }
+.pay-success p { font-size:14px; color:var(--muted); line-height:1.6; }
 </style>
 <script src="https://js.stripe.com/v3/"></script>
 </head>
@@ -120,18 +107,18 @@
   <span class="product-tag">Psicologia</span>
   <h1 class="product-title">I codici segreti della mente di LUI e LEI</h1>
   <p class="product-tagline">Leggi la mente del sesso opposto. Narcisismo, attrazione, tradimento.</p>
-  <p class="product-section-title">Il libro</p>
+  <p class="section-title">Il libro</p>
   <p class="product-description">Uomini e donne pensano, sentono e desiderano in modi così diversi da sembrare quasi inconciliabili, eppure guidati da una logica nascosta che pochi conoscono.<br><br>Quanto ti piacerebbe capire perché lui sparisce dopo un litigio, o perché lei dice 'sto bene' quando non lo è? Questo libro ti dà gli strumenti per leggere l'altro senza dover indovinare.</p>
   
-    <p class="product-section-title">Cosa imparerai</p>
-    <ul class="product-points">
-      <li>Dentro la mente maschile</li>
-      <li>Dentro la mente femminile</li>
-      <li>Come leggere la mente del sesso opposto</li>
-      <li>Psicologia dietro manipolazioni e tradimento</li>
-      <li>Narcisismo maschile e femminile</li>
-      <li>Segreti dell'attrazione sessuale uomo-donna</li>
-    </ul>
+      <p class="section-title">Cosa imparerai</p>
+      <ul class="product-points">
+        <li>Dentro la mente maschile</li>
+        <li>Dentro la mente femminile</li>
+        <li>Come leggere la mente del sesso opposto</li>
+        <li>Psicologia dietro manipolazioni e tradimento</li>
+        <li>Narcisismo maschile e femminile</li>
+        <li>Segreti dell'attrazione sessuale uomo-donna</li>
+      </ul>
   <p class="product-nb">📱 Formato digitale</p>
 </div>
 
@@ -140,10 +127,8 @@
     <span class="checkout-price">19,97 €</span>
     <span class="checkout-label">Formato digitale</span>
   </div>
-  <button class="checkout-cta" onclick="triggerUpsell()">Acquista ora →</button>
+  <button class="checkout-cta" onclick="onBuyClick()">Acquista ora →</button>
 </div>
-
-
 
 <!-- UPSELL MODAL -->
 <div class="modal-overlay" id="upsellModal">
@@ -154,42 +139,40 @@
       <p class="modal-reason">Chi ha letto "I codici segreti" ha trovato in "La tua persona ideale" le risposte alle domande che il primo lasciava aperte. Costa solo 4,97€.</p>
       <div class="modal-book">
         <div class="modal-book-cover">
-          <img src="cover1.png" alt="La tua persona ideale" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:8px;">
+          <img src="cover1.png" alt="La tua persona ideale">
         </div>
         <div class="modal-book-info">
           <div class="modal-stars">★★★★★</div>
           <h4>La tua persona ideale</h4>
-          <div class="modal-price-row">
-            <span class="modal-price-new">4,97 €</span>
-          </div>
+          <div class="modal-price">4,97 €</div>
         </div>
       </div>
-      <button class="modal-cta" onclick="addBothToCart()">Lo voglio</button>
-      <button class="modal-skip" onclick="proceedWithoutUpsell()">No grazie, non mi interessa</button>
+      <button class="modal-cta" onclick="acceptUpsell()">Lo voglio</button>
+      <button class="modal-skip" onclick="declineUpsell()">No grazie, non mi interessa</button>
     </div>
   </div>
 </div>
 
 <!-- PAYMENT MODAL -->
 <div class="payment-overlay" id="paymentOverlay">
-  <div class="payment-modal" id="paymentModal">
-    <div class="payment-modal-header">
-      <h3 id="paymentTitle">Completa l'acquisto</h3>
-      <span class="payment-amount" id="paymentAmount"></span>
-      <button class="payment-close" onclick="closePaymentModal()">✕</button>
+  <div class="payment-modal">
+    <div class="payment-header">
+      <h3 id="payTitle">Completa l'acquisto</h3>
+      <span class="amount" id="payAmount"></span>
+      <button class="payment-close" onclick="closePayment()">✕</button>
     </div>
-    <div class="payment-body" id="paymentBody">
-      <div class="payment-summary" id="paymentSummary"></div>
+    <div class="payment-body" id="payBody">
+      <div class="payment-summary" id="paySummary"></div>
       <div id="payment-element"></div>
       <button class="pay-btn" id="payBtn" onclick="submitPayment()">
         <div class="spinner"></div>
         <span class="btn-text">Paga ora →</span>
       </button>
-      <div class="payment-error" id="paymentError"></div>
-      <div class="payment-secure">🔒 Pagamento sicuro con Stripe</div>
+      <div class="pay-error" id="payError"></div>
+      <div class="pay-secure">🔒 Pagamento sicuro con Stripe</div>
     </div>
-    <div class="payment-success" id="paymentSuccess">
-      <div class="success-icon">🎉</div>
+    <div class="pay-success" id="paySuccess">
+      <div class="icon">🎉</div>
       <h3>Acquisto completato!</h3>
       <p>Grazie! Riceverai una email con il link per scaricare la tua guida digitale.</p>
     </div>
@@ -197,59 +180,126 @@
 </div>
 
 <script>
-const BOOK_ID = 3;
-const BOOK_PRICE = 1997;
-const UPSELL_ID = 1;
-const UPSELL_AMOUNT = 497;
+var BOOK_ID = 3;
+var BOOK_AMOUNT = 1997;
+var UPSELL_ID = 1;
+var UPSELL_AMOUNT = 497;
+var withUpsell = false;
+var stripeElements = null;
+var stripeInstance = null;
 
-const stripe = (typeof Stripe !== 'undefined') ? Stripe('pk_live_51SNsVxFy02awdoWu2til2JsyR505TiLnw3yu1B3EIjiuG88gEALFxJwopG5xmFVnrexN071yIhlHSMdBHf8Y1srq00avLuDeTQ') : null;
-let stripeElements = null;
-let withUpsell = false;
-let }
+if (typeof Stripe !== 'undefined') {
+  stripeInstance = Stripe('pk_live_51SNsVxFy02awdoWu2til2JsyR505TiLnw3yu1B3EIjiuG88gEALFxJwopG5xmFVnrexN071yIhlHSMdBHf8Y1srq00avLuDeTQ');
+}
 
-function addBothToCart(){ withUpsell=true; document.getElementById('upsellModal').classList.remove('active'); openPaymentModal(BOOK_ID, UPSELL_ID); }
-function proceedWithoutUpsell(){ withUpsell=false; document.getElementById('upsellModal').classList.remove('active'); document.body.style.overflow=''; openPaymentModal(BOOK_ID, null); }
-document.getElementById && document.getElementById('upsellModal') && document.getElementById('upsellModal').addEventListener('click',function(e){ if(e.target===this) proceedWithoutUpsell(); });
+function onBuyClick() {
+  document.getElementById('upsellModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
 
-async function openPaymentModal(bookId, upsellId){
-  document.body.style.overflow='hidden';
+function acceptUpsell() {
+  withUpsell = true;
+  document.getElementById('upsellModal').classList.remove('active');
+  openPayment(BOOK_ID, UPSELL_ID);
+}
+
+function declineUpsell() {
+  withUpsell = false;
+  document.getElementById('upsellModal').classList.remove('active');
+  openPayment(BOOK_ID, null);
+}
+
+document.getElementById('upsellModal').addEventListener('click', function(e) {
+  if (e.target === this) declineUpsell();
+});
+
+async function openPayment(bookId, upsellId) {
+  document.body.style.overflow = 'hidden';
   document.getElementById('paymentOverlay').classList.add('active');
-  document.getElementById('paymentBody').style.display='block';
-  document.getElementById('paymentSuccess').classList.remove('active');
-  document.getElementById('paymentError').style.display='none';
+  document.getElementById('payBody').style.display = 'block';
+  document.getElementById('paySuccess').classList.remove('active');
+  document.getElementById('payError').style.display = 'none';
   document.getElementById('payBtn').classList.remove('loading');
-  document.getElementById('payBtn').disabled=false;
+  document.getElementById('payBtn').disabled = false;
+
   try {
-    const res = await fetch('/api/create-payment-intent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({bookId,upsellId})});
-    const data = await res.json();
-    if(!res.ok) throw new Error(data.error||'Errore del server');
-    const euros = (data.amount/100).toFixed(2).replace('.',',')+' €';
-    document.getElementById('paymentAmount').textContent = euros;
-    document.getElementById('paymentTitle').textContent = upsellId ? 'Pacchetto acquisto' : "Completa l'acquisto";
-    document.getElementById('paymentSummary').innerHTML = '<strong>Acquisto:</strong> '+data.description;
-    stripeElements = stripe.elements({clientSecret:data.clientSecret,appearance:{theme:'stripe',variables:{colorPrimary:'#7B3D1E',colorBackground:'#fbf6f0',colorText:'#1A1208',fontFamily:"'Plus Jakarta Sans',sans-serif",borderRadius:'10px'}}});
-    const pe = stripeElements.create('payment');
-    document.getElementById('payment-element').innerHTML='';
+    var res = await fetch('/api/create-payment-intent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ bookId: bookId, upsellId: upsellId })
+    });
+    var data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Errore del server');
+
+    var euros = (data.amount / 100).toFixed(2).replace('.', ',') + ' €';
+    document.getElementById('payAmount').textContent = euros;
+    document.getElementById('payTitle').textContent = upsellId ? 'Pacchetto acquisto' : "Completa l'acquisto";
+    document.getElementById('paySummary').innerHTML = '<strong>Acquisto:</strong> ' + data.description;
+
+    if (!stripeInstance) throw new Error('Stripe non disponibile');
+
+    stripeElements = stripeInstance.elements({
+      clientSecret: data.clientSecret,
+      appearance: {
+        theme: 'stripe',
+        variables: {
+          colorPrimary: '#7B3D1E',
+          colorBackground: '#fbf6f0',
+          colorText: '#1A1208',
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
+          borderRadius: '10px'
+        }
+      }
+    });
+    var pe = stripeElements.create('payment');
+    document.getElementById('payment-element').innerHTML = '';
     pe.mount('#payment-element');
-  } catch(err){
-    document.getElementById('paymentError').textContent=err.message;
-    document.getElementById('paymentError').style.display='block';
+
+  } catch(err) {
+    document.getElementById('payError').textContent = err.message;
+    document.getElementById('payError').style.display = 'block';
   }
 }
 
-async function submitPayment(){
-  const btn=document.getElementById('payBtn');
-  const err=document.getElementById('paymentError');
-  btn.classList.add('loading'); btn.disabled=true; err.style.display='none';
+async function submitPayment() {
+  var btn = document.getElementById('payBtn');
+  var errEl = document.getElementById('payError');
+  btn.classList.add('loading');
+  btn.disabled = true;
+  errEl.style.display = 'none';
   try {
-    const {error} = await stripe.confirmPayment({elements:stripeElements,confirmParams:{return_url:window.location.origin+'?success=true'},redirect:'if_required'});
-    if(error){ err.textContent=error.message; err.style.display='block'; btn.classList.remove('loading'); btn.disabled=false; }
-    else { document.getElementById('paymentBody').style.display='none'; document.getElementById('paymentSuccess').classList.add('active'); }
-  } catch(e){ err.textContent='Errore durante il pagamento. Riprova.'; err.style.display='block'; btn.classList.remove('loading'); btn.disabled=false; }
+    var result = await stripeInstance.confirmPayment({
+      elements: stripeElements,
+      confirmParams: { return_url: window.location.origin + '?success=true' },
+      redirect: 'if_required'
+    });
+    if (result.error) {
+      errEl.textContent = result.error.message;
+      errEl.style.display = 'block';
+      btn.classList.remove('loading');
+      btn.disabled = false;
+    } else {
+      document.getElementById('payBody').style.display = 'none';
+      document.getElementById('paySuccess').classList.add('active');
+    }
+  } catch(err) {
+    errEl.textContent = 'Errore durante il pagamento. Riprova.';
+    errEl.style.display = 'block';
+    btn.classList.remove('loading');
+    btn.disabled = false;
+  }
 }
 
-function closePaymentModal(){ document.getElementById('paymentOverlay').classList.remove('active'); document.body.style.overflow=''; stripeElements=null; document.getElementById('payment-element').innerHTML=''; }
-document.getElementById('paymentOverlay').addEventListener('click',function(e){ if(e.target===this) closePaymentModal(); });
+function closePayment() {
+  document.getElementById('paymentOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+  stripeElements = null;
+  document.getElementById('payment-element').innerHTML = '';
+}
+
+document.getElementById('paymentOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closePayment();
+});
 </script>
 </body>
 </html>
