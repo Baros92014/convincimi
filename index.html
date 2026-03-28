@@ -1303,7 +1303,7 @@ let sidePanelTimer=null,sidePanelSecs=null;
 // Inizializza il timer solo la prima volta
 function initSideTimer(){
   if(sidePanelSecs !== null) return; // già avviato
-  sidePanelSecs = 59;
+  sidePanelSecs = 59 * 60; // 59 minuti
   updateSideTimer();
   sidePanelTimer = setInterval(()=>{
     sidePanelSecs--;
@@ -1389,3 +1389,4 @@ setTimeout(()=>{ document.querySelectorAll('.book-card:not(.visible)').forEach(c
 </script>
 </body>
 </html>
+ 
