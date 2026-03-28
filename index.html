@@ -98,14 +98,10 @@
     display: grid;
     grid-template-columns: 110px 1fr;
     min-height: 160px;
-    opacity: 0;
-    transform: translateY(18px);
-    transition: opacity 0.55s ease, transform 0.55s ease;
+    opacity: 1;
     position: relative;
     cursor: pointer;
   }
-  .book-card.visible { opacity: 1; transform: translateY(0); }
-  .book-card:active { transform: scale(0.99); }
 
   /* Cover — LEFT */
   .book-cover-area {
