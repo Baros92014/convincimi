@@ -88,6 +88,25 @@ body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--cream); colo
 .pay-success .icon { font-size:48px; margin-bottom:14px; }
 .pay-success h3 { font-size:20px; font-weight:700; color:var(--ink); margin-bottom:8px; }
 .pay-success p { font-size:14px; color:var(--muted); line-height:1.6; }
+
+  .trust-box { margin-top:24px; display:flex; flex-direction:column; gap:12px; }
+  .trust-item { display:flex; align-items:center; gap:12px; font-size:13.5px; font-weight:500; color:var(--ink); }
+  .trust-icon { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex-shrink:0; }
+  .trust-green { background:#1a7a3a; color:#fff; }
+  .trust-gold { background:#f4a623; color:#fff; }
+  .trust-white { background:var(--surface); color:var(--ink); border:1px solid var(--border); }
+  .reviews-section { margin-top:32px; }
+  .reviews-section .section-title { margin-top:0; }
+  .review-slider-wrap { position:relative; }
+  .review-slider { display:flex; gap:10px; overflow:hidden; }
+  .review-slide { flex:0 0 80%; max-width:80%; }
+  .review-img { width:100%; border-radius:10px; display:block; box-shadow:0 2px 12px rgba(24,18,16,0.10); }
+  .review-nav { display:flex; align-items:center; justify-content:center; gap:12px; margin-top:12px; }
+  .review-btn { width:36px; height:36px; border-radius:50%; border:1.5px solid var(--border); background:var(--white); color:var(--ink); font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(24,18,16,0.08); flex-shrink:0; }
+  .review-btn:active { background:var(--surface); }
+  .review-dots { display:flex; gap:6px; }
+  .review-dot { width:6px; height:6px; border-radius:50%; background:var(--border); transition:background 0.2s; }
+  .review-dot.active { background:var(--wine); }
 </style>
 <script src="https://js.stripe.com/v3/"></script>
 </head>
@@ -106,7 +125,7 @@ body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--cream); colo
 <div class="product-body">
   <span class="product-tag">Potere · Persuasione</span>
   <h1 class="product-title">Guida al potere sociale COMPLETA</h1>
-  <p class="product-tagline">Dinamiche di potere, persuasione e come difendersi dai manipolatori.</p>
+  <p class="product-tagline">Sai perché alcune persone dominano i contesti sociali mentre altre restano in disparte? Hanno capito come funzionano le dinamiche del potere. Questo libro ti insegna a fare lo stesso.</p>
   <p class="section-title">Il libro</p>
   <p class="product-description">Dietro ogni interazione si nascondono dinamiche di potere e strategie invisibili. Comprenderli significa decifrare i comportamenti altrui e ottenere vantaggio nelle relazioni e nella vita quotidiana.<br><br>Questo non è un libro su come manipolare gli altri. È un libro su come smettere di essere manipolato, e come comunicare in modo che gli altri ti rispettino davvero.</p>
   
@@ -119,6 +138,38 @@ body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--cream); colo
         <li>Segreti della comunicazione efficace per dominare ogni contesto</li>
       </ul>
   <p class="product-nb">📱 Formato digitale</p>
+
+  <!-- TRUST BOX -->
+  <div class="trust-box">
+    <div class="trust-item">
+      <div class="trust-icon trust-green">✓</div>
+      <span>Letto da oltre 10.000 persone in tutto il mondo</span>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon trust-gold">★</div>
+      <span>4.9/5 — valutazione media verificata</span>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon trust-white">↓</div>
+      <span>Download immediato dopo l'acquisto</span>
+    </div>
+
+  <!-- RECENSIONI -->
+  <div class="reviews-section">
+    <p class="section-title">Cosa dicono i lettori</p>
+    <div class="review-slider-wrap">
+      <div class="review-slider" id="slider_potere_sociale">
+
+      </div>
+      <div class="review-nav">
+        <button class="review-btn" onclick="moveReview('slider_potere_sociale',-1)">‹</button>
+        <div class="review-dots" id="dots_slider_potere_sociale">
+
+        </div>
+        <button class="review-btn" onclick="moveReview('slider_potere_sociale',1)">›</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="checkout-bar">
@@ -134,19 +185,21 @@ body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--cream); colo
   <div class="modal">
     <div class="modal-body">
       <div class="modal-badge-top">⭐ Consigliato dai nostri lettori</div>
-      <h3 class="modal-title">Prima di concludere</h3>
-      <p class="modal-reason">Chi ha letto "La guida al potere sociale" ha trovato in "I codici segreti" le risposte alle domande che il primo lasciava aperte. Costa solo 4,97€.</p>
-      <div class="modal-book">
-        <div class="modal-book-cover">
+      <div class="modal-book-row">
+        <div class="modal-book-thumb">
           <img src="cover3.png" alt="I codici segreti della mente di LUI e LEI">
         </div>
-        <div class="modal-book-info">
+        <div class="modal-book-meta">
           <div class="modal-stars">★★★★★</div>
-          <h4>I codici segreti della mente di LUI e LEI</h4>
-          <div class="modal-price">4,97 €</div>
+          <div class="modal-book-name">I codici segreti della mente di LUI e LEI</div>
         </div>
       </div>
-      <button class="modal-cta" onclick="acceptUpsell()">Lo voglio</button>
+      <h3 class="modal-title">Prima di concludere</h3>
+      <p class="modal-reason">Il 79% dei nostri lettori (1.842 questo mese) ha trovato la risposta che cercava combinando la lettura di questi due libri. Solo per ora: aggiungi <strong>I codici segreti della mente di LUI e LEI</strong> e ricevi tutti gli altri libri in regalo.</p>
+      <div class="modal-bottom-row">
+        <span class="modal-price">4,97 €</span>
+        <button class="modal-cta" onclick="acceptUpsell()">Lo voglio</button>
+      </div>
       <button class="modal-skip" onclick="declineUpsell()">No grazie, non mi interessa</button>
     </div>
   </div>
@@ -299,6 +352,40 @@ function closePayment() {
 document.getElementById('paymentOverlay').addEventListener('click', function(e) {
   if (e.target === this) closePayment();
 });
+</script>
+
+<script>
+(function() {
+  var sliders = document.querySelectorAll('.review-slider');
+  sliders.forEach(function(sl) {
+    var idx = 0;
+    sl._idx = 0;
+  });
+})();
+
+function moveReview(id, dir) {
+  var sl = document.getElementById(id);
+  var slides = sl.querySelectorAll('.review-slide');
+  var dotsEl = document.getElementById('dots_' + id);
+  var dots = dotsEl ? dotsEl.querySelectorAll('.review-dot') : [];
+  var total = slides.length;
+  if (!sl._idx) sl._idx = 0;
+  sl._idx = (sl._idx + dir + total) % total;
+  var slideW = slides[0].offsetWidth + 10;
+  sl.scrollTo({ left: sl._idx * slideW, behavior: 'smooth' });
+  dots.forEach(function(d,i) { d.classList.toggle('active', i === sl._idx); });
+}
+
+function goReview(id, i) {
+  var sl = document.getElementById(id);
+  var slides = sl.querySelectorAll('.review-slide');
+  var dotsEl = document.getElementById('dots_' + id);
+  var dots = dotsEl ? dotsEl.querySelectorAll('.review-dot') : [];
+  sl._idx = i;
+  var slideW = slides[0].offsetWidth + 10;
+  sl.scrollTo({ left: i * slideW, behavior: 'smooth' });
+  dots.forEach(function(d,j) { d.classList.toggle('active', j === i); });
+}
 </script>
 </body>
 </html>
