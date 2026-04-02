@@ -148,7 +148,10 @@
     justify-content: space-between;
     margin-top: 10px; gap: 8px;
   }
-  .book-price { font-size: 21px; font-weight: 700; color: var(--ink); letter-spacing: -0.4px; line-height: 1; }
+  .book-price-block { display: flex; flex-direction: column; }
+  .book-price { font-size: 21px; font-weight: 700; color: var(--ink); letter-spacing: -0.4px; line-height: 1; display: block; }
+  .book-price-orig { font-size: 12px; font-weight: 400; color: var(--muted); text-decoration: line-through; display: block; margin-top: 2px; }
+  .book-discount-badge { font-size: 9px; font-weight: 700; background: var(--wine); color: #fff; padding: 2px 5px; border-radius: 4px; margin-left: 5px; vertical-align: middle; }
 
   .cta-btn {
     display: inline-flex; align-items: center; justify-content: center;
@@ -605,7 +608,7 @@
     <div class="nav-drawer-logo"><span>Convincimi</span></div>
     <ul class="nav-links">
       <li><a href="#libri" onclick="closeDrawer()"><span class="nav-icon">📚</span>Libri</a></li>
-      <li><a href="#recensioni" onclick="closeDrawer()"><span class="nav-icon">⭐</span>Recensioni</a></li>
+      <li><a href="recensioni.html" onclick="closeDrawer()"><span class="nav-icon">⭐</span>Recensioni</a></li>
       <li><a href="javascript:void(0)" onclick="closeDrawer();openPage('newsletter')"><span class="nav-icon">✉️</span>Newsletter</a></li>
       <li><a href="javascript:void(0)" onclick="closeDrawer();openPage('chisiamo')"><span class="nav-icon">👥</span>Chi siamo</a></li>
     </ul>
@@ -644,7 +647,7 @@
         <p class="book-tagline">Capisci chi sei e cosa cerchi davvero prima di scegliere un partner.</p>
       </div>
       <div class="book-bottom">
-        <span class="book-price">14,97 €</span>
+        <div class="book-price-block"><span class="book-price">14,97 € <span class="book-discount-badge">−63%</span></span><span class="book-price-orig">39,97 €</span></div>
         <button class="cta-btn" onclick="event.stopPropagation();window.location.href='persona-ideale.html'">Scopri →</button>
       </div>
     </div>
@@ -662,7 +665,7 @@
         <p class="book-tagline">Leggi la mente del sesso opposto. Narcisismo, attrazione, tradimento.</p>
       </div>
       <div class="book-bottom">
-        <span class="book-price">19,97 €</span>
+        <div class="book-price-block"><span class="book-price">19,97 € <span class="book-discount-badge">−50%</span></span><span class="book-price-orig">39,97 €</span></div>
         <button class="cta-btn" onclick="event.stopPropagation();window.location.href='codici-segreti.html'">Scopri →</button>
       </div>
     </div>
@@ -683,9 +686,9 @@
       <p class="bundle-desc">La raccolta definitiva di tutti i libri Convincimi in un unico pacchetto.</p>
       <p class="bundle-nb">📱 Formato digitale</p>
       <div class="bundle-pricing">
-        <span class="bundle-price-orig">79,88 €</span>
+        <span class="bundle-price-orig">164,97 €</span>
         <span class="bundle-price-new">49,97 €</span>
-        <span class="discount-badge">−37%</span>
+        <span class="discount-badge">−70%</span>
       </div>
       <button class="cta-btn bundle-btn" onclick="event.stopPropagation();window.location.href='bundle.html'">Scopri il pacchetto →</button>
     </div>
@@ -703,7 +706,7 @@
         <p class="book-tagline">Esci dalle dinamiche tossiche. Costruisci relazioni sane.</p>
       </div>
       <div class="book-bottom">
-        <span class="book-price">19,97 €</span>
+        <div class="book-price-block"><span class="book-price">19,97 € <span class="book-discount-badge">−50%</span></span><span class="book-price-orig">39,97 €</span></div>
         <button class="cta-btn" onclick="event.stopPropagation();window.location.href='relazione-ideale.html'">Scopri →</button>
       </div>
     </div>
@@ -721,7 +724,7 @@
         <p class="book-tagline">Dinamiche di potere, persuasione e difesa dai manipolatori.</p>
       </div>
       <div class="book-bottom">
-        <span class="book-price">24,97 €</span>
+        <div class="book-price-block"><span class="book-price">24,97 € <span class="book-discount-badge">−50%</span></span><span class="book-price-orig">49,97 €</span></div>
         <button class="cta-btn" onclick="event.stopPropagation();window.location.href='potere-sociale.html'">Scopri →</button>
       </div>
     </div>
@@ -730,9 +733,9 @@
 </section>
 
 <!-- SIDE TAB — small badge only -->
-<div class="side-tab" onclick="openSidePanel()" title="Pacchetto completo −37%">
-  <div class="side-tab-label" style="padding:14px 7px;gap:0;writing-mode:vertical-rl;text-orientation:mixed;font-size:13px;font-weight:800;letter-spacing:1px;background:var(--wine);color:var(--gold);">
-    −37%
+<div class="side-tab" onclick="openSidePanel()" title="Pacchetto completo −70%">
+  <div class="side-tab-label" style="padding:14px 7px;gap:0;writing-mode:vertical-rl;text-orientation:mixed;font-size:13px;font-weight:800;letter-spacing:1px;background:#1A1208;color:var(--gold);">
+    −70%
   </div>
 </div>
 
@@ -754,8 +757,8 @@
         <p>La raccolta definitiva di tutti i libri in formato digitale.</p>
         <div class="side-price-row">
           <span class="side-price-new">49,97 €</span>
-          <span class="side-price-old">79,88 €</span>
-          <span class="side-badge">−37%</span>
+          <span class="side-price-old">164,97 €</span>
+          <span class="side-badge">−70%</span>
         </div>
       </div>
     </div>
