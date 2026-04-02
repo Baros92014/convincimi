@@ -743,18 +743,19 @@
 <div class="side-panel-overlay" id="sidePanelOverlay" onclick="closeSidePanel()"></div>
 <div class="side-panel" id="sidePanel">
   <div class="side-panel-header">
-    <h3>Prendi tutto a <em>metà prezzo</em></h3>
+    <h3>Tutta la nostra collezione completa</h3>
     <button class="side-panel-close" onclick="closeSidePanel()">✕</button>
   </div>
   <div class="side-panel-body">
-    <p class="side-panel-reason">Tutti e 4 i libri Convincimi in un unico pacchetto. Risparmi quasi 30 euro rispetto all'acquisto singolo.</p>
+    <p class="side-panel-reason">Tutti i libri di Convincimi in un unico pacchetto. Risparmi più di 100 euro rispetto all'acquisto singolo.</p>
     <div class="side-panel-book">
       <div class="side-panel-cover" style="background:none;padding:0;overflow:hidden">
-        <img src="cover5.png" alt="Convincimi ULTIMATE" style="width:100%;height:100%;object-fit:cover;border-radius:5px;">
+        <img src="cover5.png" alt="Collezione convincimii" style="width:100%;height:100%;object-fit:cover;border-radius:5px;">
       </div>
       <div class="side-panel-book-info">
-        <h4>Convincimi ULTIMATE</h4>
+        <h4>Collezione convincimii</h4>
         <p>La raccolta definitiva di tutti i libri in formato digitale.</p>
+        <div style="display:inline-block;background:#c0392b;color:#fff;font-size:10px;font-weight:800;letter-spacing:0.5px;padding:3px 10px;border-radius:6px;margin-bottom:8px;">RISPARMI 100€</div>
         <div class="side-price-row">
           <span class="side-price-new">49,97 €</span>
           <span class="side-price-old">164,97 €</span>
@@ -828,15 +829,18 @@
       <p style="font-size:16px;line-height:1.8;color:var(--ink);margin-bottom:18px;">oppure definizioni come:</p>
 
       <!-- Ultimo paragrafo con dissolvenza -->
-      <div style="position:relative;">
+      <div style="position:relative;margin-bottom:0;">
         <p style="font-size:16px;line-height:1.8;color:var(--ink);margin-bottom:0;"><em style="color:var(--wine);">"Ma sì, si capiva dall'inizio che è un narcisista… come hai fatto a non vederlo?"</em><br>Poi però, magicamente...</p>
-        <div style="position:absolute;bottom:0;left:0;right:0;height:80px;background:linear-gradient(to bottom,transparent,var(--cream));pointer-events:none;"></div>
+        <!-- Dissolvenza che sfuma il testo nel nero -->
+        <div style="position:absolute;bottom:0;left:calc(-50vw + 50% + -22px);right:calc(-50vw + 50% + -22px);height:120px;background:linear-gradient(to bottom,transparent 0%,#1A1208 100%);pointer-events:none;"></div>
       </div>
-      <p style="text-align:center;font-size:15px;font-weight:600;color:var(--muted);margin:14px 0 20px;">Continua a leggere...</p>
-    </div>
 
-    <!-- Form iscrizione -->
-    <div style="background:var(--ink);margin:0 14px;border-radius:16px;padding:28px 20px;text-align:center;">
+      <!-- Zona nera con "Continua a leggere" -->
+      </div>
+    <div style="background:#1A1208;padding:18px 22px 28px;margin:0 calc(-50vw + 50%);padding-left:max(22px, calc(50vw - 280px));padding-right:max(22px, calc(50vw - 280px));">
+      <p style="text-align:center;font-size:15px;font-weight:600;color:var(--gold);margin:0 0 20px;">Continua a leggere...</p>
+      <!-- Form iscrizione -->
+      <div style="background:rgba(255,255,255,0.05);border-radius:12px;padding:24px 16px;text-align:center;border:1px solid rgba(201,168,76,0.15);">
       <h3 style="font-size:20px;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.25;">Per continuare a leggere gratuitamente<br>iscriviti alla newsletter</h3>
       <p style="font-size:13px;color:rgba(245,240,232,0.55);margin-bottom:22px;">Iscriviti gratuitamente. Contenuti esclusivi su relazioni, psicologia e dinamiche di potere.</p>
       <form onsubmit="handleNewsletterPageSubmit(event)" style="display:flex;flex-direction:column;gap:10px;">
@@ -844,6 +848,7 @@
         <button type="submit" id="newsletterPageBtn" style="padding:14px;background:var(--gold);color:var(--ink);border:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:11px;">Iscriviti gratis</button>
       </form>
       <p style="margin-top:10px;font-size:11px;color:rgba(245,240,232,0.25);">Nessuno spam. Puoi cancellarti quando vuoi.</p>
+      </div>
     </div>
   </div>
 </div>
