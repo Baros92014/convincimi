@@ -88,6 +88,17 @@ body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--cream); colo
 .pay-success .icon { font-size:48px; margin-bottom:14px; }
 .pay-success h3 { font-size:20px; font-weight:700; color:var(--ink); margin-bottom:8px; }
 .pay-success p { font-size:14px; color:var(--muted); line-height:1.6; }
+
+  .trust-box { margin-top:24px; display:flex; flex-direction:column; gap:12px; }
+  .trust-item { display:flex; align-items:center; gap:12px; font-size:13.5px; font-weight:500; color:var(--ink); }
+  .trust-icon { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex-shrink:0; }
+  .trust-green { background:#1a7a3a; color:#fff; }
+  .trust-gold { background:#f4a623; color:#fff; }
+  .trust-white { background:var(--surface); color:var(--ink); border:1px solid var(--border); }
+  .reviews-section { margin-top:32px; }
+  .reviews-section .section-title { margin-top:0; }
+  .review-scroll { display:flex; flex-direction:column; gap:12px; }
+  .review-img { width:100%; border-radius:14px; display:block; box-shadow:0 2px 12px rgba(24,18,16,0.10); }
 </style>
 <script src="https://js.stripe.com/v3/"></script>
 </head>
@@ -106,7 +117,7 @@ body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--cream); colo
 <div class="product-body">
   <span class="product-tag">Psicologia</span>
   <h1 class="product-title">I codici segreti della mente di LUI e LEI</h1>
-  <p class="product-tagline">Leggi la mente del sesso opposto. Narcisismo, attrazione, tradimento.</p>
+  <p class="product-tagline">Uomo e donna vivono le relazioni attraverso schemi completamente diversi. Capire come pensa l'altro sesso cambia radicalmente il modo in cui vivi le relazioni.</p>
   <p class="section-title">Il libro</p>
   <p class="product-description">Uomini e donne pensano, sentono e desiderano in modi così diversi da sembrare quasi inconciliabili, eppure guidati da una logica nascosta che pochi conoscono.<br><br>Quanto ti piacerebbe capire perché lui sparisce dopo un litigio, o perché lei dice 'sto bene' quando non lo è? Questo libro ti dà gli strumenti per leggere l'altro senza dover indovinare.</p>
   
@@ -120,6 +131,31 @@ body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--cream); colo
         <li>Segreti dell'attrazione sessuale uomo-donna</li>
       </ul>
   <p class="product-nb">📱 Formato digitale</p>
+
+  <!-- TRUST BOX -->
+  <div class="trust-box">
+    <div class="trust-item">
+      <div class="trust-icon trust-green">✓</div>
+      <span>Letto da oltre 10.000 persone in tutto il mondo</span>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon trust-gold">★</div>
+      <span>4.9/5 — valutazione media verificata</span>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon trust-white">↓</div>
+      <span>Download immediato dopo l'acquisto</span>
+    </div>
+  </div>
+
+  <!-- RECENSIONI -->
+  <div class="reviews-section">
+    <p class="section-title">Cosa dicono i lettori</p>
+    <div class="review-scroll">
+      <img class="review-img" src="Recensione_2.PNG" alt="Recensione lettore">
+      <img class="review-img" src="Recensione_2_0.PNG" alt="Recensione lettore">
+    </div>
+  </div>
 </div>
 
 <div class="checkout-bar">
@@ -135,19 +171,21 @@ body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--cream); colo
   <div class="modal">
     <div class="modal-body">
       <div class="modal-badge-top">⭐ Consigliato dai nostri lettori</div>
-      <h3 class="modal-title">Prima di concludere</h3>
-      <p class="modal-reason">Chi ha letto "I codici segreti" ha trovato in "La tua persona ideale" le risposte alle domande che il primo lasciava aperte. Costa solo 4,97€.</p>
-      <div class="modal-book">
-        <div class="modal-book-cover">
+      <div class="modal-book-row">
+        <div class="modal-book-thumb">
           <img src="cover1.png" alt="La tua persona ideale">
         </div>
-        <div class="modal-book-info">
+        <div class="modal-book-meta">
           <div class="modal-stars">★★★★★</div>
-          <h4>La tua persona ideale</h4>
-          <div class="modal-price">4,97 €</div>
+          <div class="modal-book-name">La tua persona ideale</div>
         </div>
       </div>
-      <button class="modal-cta" onclick="acceptUpsell()">Lo voglio</button>
+      <h3 class="modal-title">Prima di concludere</h3>
+      <p class="modal-reason">Il 79% dei nostri lettori (1.842 questo mese) ha trovato la risposta che cercava combinando la lettura di questi due libri. Solo per ora: aggiungi <strong>La tua persona ideale</strong> e ricevi tutti gli altri libri in regalo.</p>
+      <div class="modal-bottom-row">
+        <span class="modal-price">4,97 €</span>
+        <button class="modal-cta" onclick="acceptUpsell()">Lo voglio</button>
+      </div>
       <button class="modal-skip" onclick="declineUpsell()">No grazie, non mi interessa</button>
     </div>
   </div>
