@@ -97,8 +97,16 @@ body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--cream); colo
   .trust-white { background:var(--surface); color:var(--ink); border:1px solid var(--border); }
   .reviews-section { margin-top:32px; }
   .reviews-section .section-title { margin-top:0; }
-  .review-scroll { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+  .review-slider-wrap { position:relative; }
+  .review-slider { display:flex; gap:10px; overflow:hidden; }
+  .review-slide { flex:0 0 80%; max-width:80%; }
   .review-img { width:100%; border-radius:10px; display:block; box-shadow:0 2px 12px rgba(24,18,16,0.10); }
+  .review-nav { display:flex; align-items:center; justify-content:center; gap:12px; margin-top:12px; }
+  .review-btn { width:36px; height:36px; border-radius:50%; border:1.5px solid var(--border); background:var(--white); color:var(--ink); font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(24,18,16,0.08); flex-shrink:0; }
+  .review-btn:active { background:var(--surface); }
+  .review-dots { display:flex; gap:6px; }
+  .review-dot { width:6px; height:6px; border-radius:50%; background:var(--border); transition:background 0.2s; }
+  .review-dot.active { background:var(--wine); }
 </style>
 <script src="https://js.stripe.com/v3/"></script>
 </head>
@@ -146,14 +154,31 @@ body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--cream); colo
       <div class="trust-icon trust-white">↓</div>
       <span>Download immediato dopo l'acquisto</span>
     </div>
-  </div>
 
   <!-- RECENSIONI -->
   <div class="reviews-section">
     <p class="section-title">Cosa dicono i lettori</p>
-    <div class="review-scroll">
-      <img class="review-img" src="Recensione_2.PNG" alt="Recensione lettore">
-      <img class="review-img" src="Recensione_2_0.PNG" alt="Recensione lettore">
+    <div class="review-slider-wrap">
+      <div class="review-slider" id="slider_codici_segreti">
+      <div class="review-slide"><img class="review-img" src="Recensione_2.PNG" alt="Recensione lettore"></div>
+      <div class="review-slide"><img class="review-img" src="Recensione_2_0.PNG" alt="Recensione lettore"></div>
+      <div class="review-slide"><img class="review-img" src="Recensione_2_1.PNG" alt="Recensione lettore"></div>
+      <div class="review-slide"><img class="review-img" src="Recensione_2_2.PNG" alt="Recensione lettore"></div>
+      <div class="review-slide"><img class="review-img" src="Recensione_2_3.PNG" alt="Recensione lettore"></div>
+      <div class="review-slide"><img class="review-img" src="Recensione_2_4.PNG" alt="Recensione lettore"></div>
+      </div>
+      <div class="review-nav">
+        <button class="review-btn" onclick="moveReview('slider_codici_segreti',-1)">‹</button>
+        <div class="review-dots" id="dots_slider_codici_segreti">
+      <span class="review-dot active" onclick="goReview('slider_codici_segreti',0)"></span>
+      <span class="review-dot" onclick="goReview('slider_codici_segreti',1)"></span>
+      <span class="review-dot" onclick="goReview('slider_codici_segreti',2)"></span>
+      <span class="review-dot" onclick="goReview('slider_codici_segreti',3)"></span>
+      <span class="review-dot" onclick="goReview('slider_codici_segreti',4)"></span>
+      <span class="review-dot" onclick="goReview('slider_codici_segreti',5)"></span>
+        </div>
+        <button class="review-btn" onclick="moveReview('slider_codici_segreti',1)">›</button>
+      </div>
     </div>
   </div>
 </div>
@@ -338,6 +363,40 @@ function closePayment() {
 document.getElementById('paymentOverlay').addEventListener('click', function(e) {
   if (e.target === this) closePayment();
 });
+</script>
+
+<script>
+(function() {
+  var sliders = document.querySelectorAll('.review-slider');
+  sliders.forEach(function(sl) {
+    var idx = 0;
+    sl._idx = 0;
+  });
+})();
+
+function moveReview(id, dir) {
+  var sl = document.getElementById(id);
+  var slides = sl.querySelectorAll('.review-slide');
+  var dotsEl = document.getElementById('dots_' + id);
+  var dots = dotsEl ? dotsEl.querySelectorAll('.review-dot') : [];
+  var total = slides.length;
+  if (!sl._idx) sl._idx = 0;
+  sl._idx = (sl._idx + dir + total) % total;
+  var slideW = slides[0].offsetWidth + 10;
+  sl.scrollTo({ left: sl._idx * slideW, behavior: 'smooth' });
+  dots.forEach(function(d,i) { d.classList.toggle('active', i === sl._idx); });
+}
+
+function goReview(id, i) {
+  var sl = document.getElementById(id);
+  var slides = sl.querySelectorAll('.review-slide');
+  var dotsEl = document.getElementById('dots_' + id);
+  var dots = dotsEl ? dotsEl.querySelectorAll('.review-dot') : [];
+  sl._idx = i;
+  var slideW = slides[0].offsetWidth + 10;
+  sl.scrollTo({ left: i * slideW, behavior: 'smooth' });
+  dots.forEach(function(d,j) { d.classList.toggle('active', j === i); });
+}
 </script>
 </body>
 </html>
