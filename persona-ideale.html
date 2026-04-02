@@ -98,7 +98,9 @@ body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--cream); colo
   .reviews-section { margin-top:32px; }
   .reviews-section .section-title { margin-top:0; }
   .review-slider-wrap { position:relative; }
-  .review-slider { display:flex; gap:10px; overflow:hidden; }
+  .review-slider { display:flex; gap:10px; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none; cursor:grab; }
+  .review-slider::-webkit-scrollbar { display:none; }
+  .review-slide { scroll-snap-align:start; }
   .review-slide { flex:0 0 80%; max-width:80%; }
   .review-img { width:100%; border-radius:10px; display:block; box-shadow:0 2px 12px rgba(24,18,16,0.10); }
   .review-nav { display:flex; align-items:center; justify-content:center; gap:12px; margin-top:12px; }
@@ -355,37 +357,51 @@ document.getElementById('paymentOverlay').addEventListener('click', function(e) 
 </script>
 
 <script>
-(function() {
-  var sliders = document.querySelectorAll('.review-slider');
-  sliders.forEach(function(sl) {
-    var idx = 0;
-    sl._idx = 0;
+function initReview(id) {
+  var sl = document.getElementById(id);
+  if (!sl) return;
+  sl._idx = 0;
+
+  // Update dots on scroll
+  sl.addEventListener('scroll', function() {
+    var slideW = sl.querySelector('.review-slide').offsetWidth + 10;
+    var idx = Math.round(sl.scrollLeft / slideW);
+    sl._idx = idx;
+    var dots = document.querySelectorAll('#dots_' + id + ' .review-dot');
+    dots.forEach(function(d,i) { d.classList.toggle('active', i === idx); });
   });
-})();
+
+  // Mouse drag
+  var isDown = false, startX, scrollLeft;
+  sl.addEventListener('mousedown', function(e) { isDown=true; sl.style.cursor='grabbing'; startX=e.pageX-sl.offsetLeft; scrollLeft=sl.scrollLeft; });
+  sl.addEventListener('mouseleave', function() { isDown=false; sl.style.cursor='grab'; });
+  sl.addEventListener('mouseup', function() { isDown=false; sl.style.cursor='grab'; });
+  sl.addEventListener('mousemove', function(e) { if(!isDown) return; e.preventDefault(); var x=e.pageX-sl.offsetLeft; sl.scrollLeft=scrollLeft-(x-startX); });
+}
 
 function moveReview(id, dir) {
   var sl = document.getElementById(id);
   var slides = sl.querySelectorAll('.review-slide');
-  var dotsEl = document.getElementById('dots_' + id);
-  var dots = dotsEl ? dotsEl.querySelectorAll('.review-dot') : [];
   var total = slides.length;
-  if (!sl._idx) sl._idx = 0;
+  if (sl._idx === undefined) sl._idx = 0;
   sl._idx = (sl._idx + dir + total) % total;
   var slideW = slides[0].offsetWidth + 10;
   sl.scrollTo({ left: sl._idx * slideW, behavior: 'smooth' });
-  dots.forEach(function(d,i) { d.classList.toggle('active', i === sl._idx); });
 }
 
 function goReview(id, i) {
   var sl = document.getElementById(id);
   var slides = sl.querySelectorAll('.review-slide');
-  var dotsEl = document.getElementById('dots_' + id);
-  var dots = dotsEl ? dotsEl.querySelectorAll('.review-dot') : [];
   sl._idx = i;
   var slideW = slides[0].offsetWidth + 10;
   sl.scrollTo({ left: i * slideW, behavior: 'smooth' });
-  dots.forEach(function(d,j) { d.classList.toggle('active', j === i); });
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.review-slider').forEach(function(sl) {
+    initReview(sl.id);
+  });
+});
 </script>
 </body>
 </html>
