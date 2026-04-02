@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recensioni — Convincimi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #fbf6f0;
+  --ink: #1A1208;
+  --wine: #7B3D1E;
+  --wine-light: #9A5030;
+  --gold: #C9A84C;
+  --muted: #7A6F60;
+  --surface: #F2F0EB;
+  --border: #E0D8CC;
+  --white: #FFFFFF;
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { scroll-behavior:smooth; }
+body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--cream); color:var(--ink); font-size:15px; line-height:1.6; overflow-x:hidden; }
+
+/* HEADER */
+.site-header { background:var(--cream); padding:14px 18px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); position:sticky; top:0; z-index:50; }
+.back-btn { font-size:14px; font-weight:600; color:var(--wine); text-decoration:none; display:flex; align-items:center; gap:6px; }
+.logo-circle { width:40px; height:40px; border-radius:50%; overflow:hidden; }
+.logo-circle img { width:100%; height:100%; object-fit:cover; }
+.header-spacer { width:60px; }
+
+/* HERO */
+.reviews-hero { padding:32px 20px 24px; text-align:center; max-width:560px; margin:0 auto; }
+.reviews-hero h1 { font-size:clamp(24px,6vw,32px); font-weight:700; letter-spacing:-0.5px; margin-bottom:8px; line-height:1.15; }
+.reviews-hero p { font-size:14px; color:var(--muted); margin-bottom:20px; }
+.hero-stats { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+.hero-stat { background:var(--white); border:1px solid var(--border); border-radius:12px; padding:10px 16px; text-align:center; }
+.hero-stat-num { font-size:20px; font-weight:700; color:var(--wine); line-height:1; }
+.hero-stat-label { font-size:10px; color:var(--muted); margin-top:2px; }
+
+/* FILTER */
+.filter-bar { display:flex; gap:8px; padding:0 16px 20px; max-width:560px; margin:0 auto; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+.filter-bar::-webkit-scrollbar { display:none; }
+.filter-btn { flex-shrink:0; padding:7px 14px; border-radius:20px; border:1px solid var(--border); background:var(--white); font-family:'Plus Jakarta Sans',sans-serif; font-size:12px; font-weight:600; color:var(--muted); cursor:pointer; transition:all 0.2s; }
+.filter-btn.active { background:var(--ink); color:#fff; border-color:var(--ink); }
+
+/* REVIEWS GRID */
+.reviews-grid { padding:0 16px 100px; max-width:560px; margin:0 auto; display:flex; flex-direction:column; gap:14px; }
+.review-card { background:var(--white); border:1px solid var(--border); border-radius:16px; padding:18px; box-shadow:0 2px 8px rgba(24,18,16,0.05); }
+.review-card-top { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:10px; }
+.review-author-info { display:flex; align-items:center; gap:10px; }
+.review-avatar { width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:700; color:#fff; flex-shrink:0; }
+.review-name { font-size:13px; font-weight:700; color:var(--ink); }
+.review-location { font-size:11px; color:var(--muted); }
+.review-stars { color:#f4a623; font-size:13px; letter-spacing:1px; }
+.review-book-tag { display:inline-block; font-size:9px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--wine); background:rgba(123,74,45,0.08); padding:2px 7px; border-radius:10px; margin-bottom:8px; }
+.review-text { font-size:13.5px; color:var(--ink); line-height:1.65; font-style:italic; }
+.review-text::before { content:'\201C'; }
+.review-text::after { content:'\201D'; }
+.review-verified { display:flex; align-items:center; gap:4px; font-size:10px; color:#1a7a3a; margin-top:10px; font-weight:600; }
+
+/* CTA BOTTOM */
+.reviews-cta { position:fixed; bottom:0; left:0; right:0; background:var(--white); border-top:1px solid var(--border); padding:14px 18px; z-index:100; box-shadow:0 -4px 20px rgba(24,18,16,0.08); }
+.reviews-cta-btn { display:block; width:100%; max-width:560px; margin:0 auto; padding:15px; background:var(--wine); color:#fff; font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; font-weight:700; letter-spacing:1px; text-transform:uppercase; border-radius:12px; border:none; cursor:pointer; text-align:center; text-decoration:none; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="/" class="back-btn">← Torna alla home</a>
+  <div class="logo-circle"><img src="logo.jpg" alt="Convincimi"></div>
+  <div class="header-spacer"></div>
+</header>
+
+<div class="reviews-hero">
+  <h1>Cosa dicono i nostri lettori</h1>
+  <p>Persone reali che hanno cambiato il loro approccio alle relazioni</p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num">10.000+</div>
+      <div class="hero-stat-label">lettori</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">4.9★</div>
+      <div class="hero-stat-label">valutazione media</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">98%</div>
+      <div class="hero-stat-label">consiglierebbe</div>
+    </div>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <button class="filter-btn active" onclick="filterReviews('tutti', this)">Tutti</button>
+  <button class="filter-btn" onclick="filterReviews('persona-ideale', this)">Persona ideale</button>
+  <button class="filter-btn" onclick="filterReviews('codici-segreti', this)">Codici segreti</button>
+  <button class="filter-btn" onclick="filterReviews('relazione-ideale', this)">Relazione ideale</button>
+  <button class="filter-btn" onclick="filterReviews('potere-sociale', this)">Potere sociale</button>
+  <button class="filter-btn" onclick="filterReviews('bundle', this)">Bundle</button>
+</div>
+
+<div class="reviews-grid" id="reviewsGrid">
+
+  <div class="review-card" data-book="persona-ideale">
+    <div class="review-card-top">
+      <div class="review-author-info">
+        <div class="review-avatar" style="background:#6B1F2A">A</div>
+        <div>
+          <div class="review-name">Anonimo</div>
+          <div class="review-location">Italia</div>
+        </div>
+      </div>
+      <div class="review-stars">★★★★★</div>
+    </div>
+    <span class="review-book-tag">La tua persona ideale</span>
+    <p class="review-text">Non ho mai avuto una relazione di più di 1-2 anni perché arrivavo ad un punto in cui non vedevo più il senso di stare con una persona. Per molto tempo ho pensato che semplicemente non fossi fatta per una relazione lunga. Dopo aver letto il tuo libro ho capito che il problema è che non sapevo cosa volevo davvero... Adesso, con il tuo aiuto sto facendo chiarezza e mi sento pronta per quando incontrerò la persona giusta. Non vedo l'ora di leggere gli altri libri 🙏</p>
+    <div class="review-verified">✓ Acquisto verificato</div>
+  </div>
+
+  <div class="review-card" data-book="persona-ideale">
+    <div class="review-card-top">
+      <div class="review-author-info">
+        <div class="review-avatar" style="background:#1A3A5C">A</div>
+        <div>
+          <div class="review-name">Anonimo</div>
+          <div class="review-location">Italia</div>
+        </div>
+      </div>
+      <div class="review-stars">★★★★★</div>
+    </div>
+    <span class="review-book-tag">La tua persona ideale</span>
+    <p class="review-text">Ho letto il libro sulla persona ideale dopo l'ennesima delusione. Ho passato 10 anni della mia vita a saltare di relazione in relazione con lo stesso tipo di persona pensando di essere "sfortunata". Dopo aver letto il vostro libro ho capito perché finivo sempre per attrarre persone sbagliate e ora io e il mio ragazzo stiamo per festeggiare il nostro 3 anniversario ❤️ Grazie di cuore convincimii</p>
+    <div class="review-verified">✓ Acquisto verificato</div>
+  </div>
+
+  <div class="review-card" data-book="persona-ideale">
+    <div class="review-card-top">
+      <div class="review-author-info">
+        <div class="review-avatar" style="background:#6B3510">A</div>
+        <div>
+          <div class="review-name">Anonimo</div>
+          <div class="review-location">Italia</div>
+        </div>
+      </div>
+      <div class="review-stars">★★★★★</div>
+    </div>
+    <span class="review-book-tag">La tua persona ideale</span>
+    <p class="review-text">Bellissima mi sta piacendo un sacco. Quello che mi ha colpito di più è che concetti che avevo sempre trovato complicati, quelli che di solito ti fanno rileggere il paragrafo tre volte, qui li capisci al primo colpo. Non avevo mai trovato un libro sulle relazioni scritto così. Lo consiglio a chiunque voglia capirsi davvero.</p>
+    <div class="review-verified">✓ Acquisto verificato</div>
+  </div>
+
+  <div class="review-card" data-book="persona-ideale">
+    <div class="review-card-top">
+      <div class="review-author-info">
+        <div class="review-avatar" style="background:#2A5A2A">A</div>
+        <div>
+          <div class="review-name">Anonimo</div>
+          <div class="review-location">Italia</div>
+        </div>
+      </div>
+      <div class="review-stars">★★★★★</div>
+    </div>
+    <span class="review-book-tag">La tua persona ideale</span>
+    <p class="review-text">Ho comprato "La tua persona ideale" ✨. Bellissima mi sta piacendo un sacco. La cosa sorprendente è che spiegate concetti difficili con una semplicità e chiarezza che non avevo mai trovato in altri libri sulle relazioni. Consiglio vivamente di leggerlo 🔥</p>
+    <div class="review-verified">✓ Acquisto verificato</div>
+  </div>
+
+  <div class="review-card" data-book="relazione-ideale">
+    <div class="review-card-top">
+      <div class="review-author-info">
+        <div class="review-avatar" style="background:#3D2408">A</div>
+        <div>
+          <div class="review-name">Anonimo</div>
+          <div class="review-location">Italia</div>
+        </div>
+      </div>
+      <div class="review-stars">★★★★★</div>
+    </div>
+    <span class="review-book-tag">La tua relazione ideale</span>
+    <p class="review-text">Io e la mia fidanzata abbiamo passato un momento difficile circa un anno fa… litigi, incomprensioni e siamo quasi arrivati a lasciarci. Dentro di me ho sempre pensato che i nostri problemi fossero colpa sua, fino a quando abbiamo deciso di leggere il tuo libro, per darci un'ultima possibilità. Da lì in poi le cose sono iniziate a migliorare, ho fatto un lavoro dentro di me e ho riconosciuto alcune dinamiche inconsce che stavano sabotando la relazione alle fondamenta. Non potrò mai ringraziarvi abbastanza. Siete fantastici 🔥💪</p>
+    <div class="review-verified">✓ Acquisto verificato</div>
+  </div>
+
+  <div class="review-card" data-book="persona-ideale">
+    <div class="review-card-top">
+      <div class="review-author-info">
+        <div class="review-avatar" style="background:#6B1F2A">M</div>
+        <div>
+          <div class="review-name">Martina R.</div>
+          <div class="review-location">Milano</div>
+        </div>
+      </div>
+      <div class="review-stars">★★★★★</div>
+    </div>
+    <span class="review-book-tag">La tua persona ideale</span>
+    <p class="review-text">Finalmente qualcuno che spiega senza giudicare. Ho capito perché scelgo sempre le stesse persone e come uscire da questo schema.</p>
+    <div class="review-verified">✓ Acquisto verificato</div>
+  </div>
+
+  <div class="review-card" data-book="codici-segreti">
+    <div class="review-card-top">
+      <div class="review-author-info">
+        <div class="review-avatar" style="background:#6B3510">S</div>
+        <div>
+          <div class="review-name">Sara F.</div>
+          <div class="review-location">Roma</div>
+        </div>
+      </div>
+      <div class="review-stars">★★★★★</div>
+    </div>
+    <span class="review-book-tag">I codici segreti</span>
+    <p class="review-text">Capire come pensa lui mi ha cambiato la vita. Sembrava quasi magia, ma era solo psicologia. Non litighiamo più per le stesse cose.</p>
+    <div class="review-verified">✓ Acquisto verificato</div>
+  </div>
+
+  <div class="review-card" data-book="relazione-ideale">
+    <div class="review-card-top">
+      <div class="review-author-info">
+        <div class="review-avatar" style="background:#1A3A5C">L</div>
+        <div>
+          <div class="review-name">Luca T.</div>
+          <div class="review-location">Torino</div>
+        </div>
+      </div>
+      <div class="review-stars">★★★★★</div>
+    </div>
+    <span class="review-book-tag">La tua relazione ideale</span>
+    <p class="review-text">Ho riconosciuto le dinamiche tossiche nella mia relazione dopo il primo capitolo. Mi ha dato gli strumenti per uscirne senza drammi.</p>
+    <div class="review-verified">✓ Acquisto verificato</div>
+  </div>
+
+  <div class="review-card" data-book="potere-sociale">
+    <div class="review-card-top">
+      <div class="review-author-info">
+        <div class="review-avatar" style="background:#2A5A2A">F</div>
+        <div>
+          <div class="review-name">Federico B.</div>
+          <div class="review-location">Bologna</div>
+        </div>
+      </div>
+      <div class="review-stars">★★★★★</div>
+    </div>
+    <span class="review-book-tag">Potere sociale</span>
+    <p class="review-text">Non credevo che un libro potesse cambiarmi così. Ora so leggere le dinamiche nelle conversazioni e nei gruppi. Mi sento molto più sicuro.</p>
+    <div class="review-verified">✓ Acquisto verificato</div>
+  </div>
+
+  <div class="review-card" data-book="bundle">
+    <div class="review-card-top">
+      <div class="review-author-info">
+        <div class="review-avatar" style="background:#C9A84C">G</div>
+        <div>
+          <div class="review-name">Giulia M.</div>
+          <div class="review-location">Firenze</div>
+        </div>
+      </div>
+      <div class="review-stars">★★★★★</div>
+    </div>
+    <span class="review-book-tag">Convincimi ULTIMATE</span>
+    <p class="review-text">Ho preso il pacchetto completo e non me ne pento. Ogni libro ha un pezzo del puzzle. Insieme formano una guida completa alla vita relazionale.</p>
+    <div class="review-verified">✓ Acquisto verificato</div>
+  </div>
+
+  <div class="review-card" data-book="relazione-ideale">
+    <div class="review-card-top">
+      <div class="review-author-info">
+        <div class="review-avatar" style="background:#3D2408">A</div>
+        <div>
+          <div class="review-name">Andrea C.</div>
+          <div class="review-location">Napoli</div>
+        </div>
+      </div>
+      <div class="review-stars">★★★★★</div>
+    </div>
+    <span class="review-book-tag">La tua relazione ideale</span>
+    <p class="review-text">Stavo perdendo la testa per qualcuno che mi manipolava. Questo libro mi ha aperto gli occhi. Ho smesso di giustificare comportamenti che non andavano.</p>
+    <div class="review-verified">✓ Acquisto verificato</div>
+  </div>
+
+  <div class="review-card" data-book="persona-ideale">
+    <div class="review-card-top">
+      <div class="review-author-info">
+        <div class="review-avatar" style="background:#1A3A5C">V</div>
+        <div>
+          <div class="review-name">Valentina D.</div>
+          <div class="review-location">Venezia</div>
+        </div>
+      </div>
+      <div class="review-stars">★★★★★</div>
+    </div>
+    <span class="review-book-tag">La tua persona ideale</span>
+    <p class="review-text">Leggevo e pensavo: stai descrivendo la mia vita. Consigliato a chiunque stia soffrendo per una relazione che non funziona ma non capisce perché.</p>
+    <div class="review-verified">✓ Acquisto verificato</div>
+  </div>
+
+  <div class="review-card" data-book="codici-segreti">
+    <div class="review-card-top">
+      <div class="review-author-info">
+        <div class="review-avatar" style="background:#6B1F2A">R</div>
+        <div>
+          <div class="review-name">Roberto P.</div>
+          <div class="review-location">Bari</div>
+        </div>
+      </div>
+      <div class="review-stars">★★★★★</div>
+    </div>
+    <span class="review-book-tag">I codici segreti</span>
+    <p class="review-text">Ho smesso di fare le stesse cose aspettandomi risultati diversi. Finalmente capisco cosa passa per la testa di lei quando litighiamo.</p>
+    <div class="review-verified">✓ Acquisto verificato</div>
+  </div>
+
+  <div class="review-card" data-book="bundle">
+    <div class="review-card-top">
+      <div class="review-author-info">
+        <div class="review-avatar" style="background:#6B3510">C</div>
+        <div>
+          <div class="review-name">Chiara B.</div>
+          <div class="review-location">Palermo</div>
+        </div>
+      </div>
+      <div class="review-stars">★★★★★</div>
+    </div>
+    <span class="review-book-tag">Convincimi ULTIMATE</span>
+    <p class="review-text">Vale ogni centesimo. Li ho letti tutti in due settimane e ho capito più di me stessa che in anni di conversazioni con amici.</p>
+    <div class="review-verified">✓ Acquisto verificato</div>
+  </div>
+
+  <div class="review-card" data-book="potere-sociale">
+    <div class="review-card-top">
+      <div class="review-author-info">
+        <div class="review-avatar" style="background:#2A5A2A">M</div>
+        <div>
+          <div class="review-name">Marco S.</div>
+          <div class="review-location">Genova</div>
+        </div>
+      </div>
+      <div class="review-stars">★★★★★</div>
+    </div>
+    <span class="review-book-tag">Potere sociale</span>
+    <p class="review-text">Non è solo teoria. Ogni concetto è applicabile subito. Dopo una settimana ho già notato la differenza nel modo in cui mi relaziono con le persone.</p>
+    <div class="review-verified">✓ Acquisto verificato</div>
+  </div>
+
+  <div class="review-card" data-book="persona-ideale">
+    <div class="review-card-top">
+      <div class="review-author-info">
+        <div class="review-avatar" style="background:#6B1F2A">A</div>
+        <div>
+          <div class="review-name">Anonimo</div>
+          <div class="review-location">Italia</div>
+        </div>
+      </div>
+      <div class="review-stars">★★★★★</div>
+    </div>
+    <span class="review-book-tag">La tua persona ideale</span>
+    <p class="review-text">Non ho mai avuto una relazione di più di 1-2 anni perché arrivavo ad un punto in cui non vedevo più il senso di stare con una persona. Per molto tempo ho pensato che semplicemente non fossi fatta per una relazione lunga. Dopo aver letto il tuo libro ho capito che il problema è che non sapevo cosa volevo davvero... Adesso, con il tuo aiuto sto facendo chiarezza e mi sento pronta per quando incontrerò la persona giusta. Non vedo l'ora di leggere gli altri libri 🙏</p>
+    <div class="review-verified">✓ Acquisto verificato</div>
+  </div>
+
+  <div class="review-card" data-book="persona-ideale">
+    <div class="review-card-top">
+      <div class="review-author-info">
+        <div class="review-avatar" style="background:#1A3A5C">A</div>
+        <div>
+          <div class="review-name">Anonimo</div>
+          <div class="review-location">Italia</div>
+        </div>
+      </div>
+      <div class="review-stars">★★★★★</div>
+    </div>
+    <span class="review-book-tag">La tua persona ideale</span>
+    <p class="review-text">Ho letto il libro sulla persona ideale dopo l'ennesima delusione. Ho passato 10 anni della mia vita a saltare di relazione in relazione con lo stesso tipo di persona pensando di essere "sfortunata". Dopo aver letto il vostro libro ho capito perché finivo sempre per attrarre persone sbagliate e ora io e il mio ragazzo stiamo per festeggiare il nostro 3 anniversario ❤️ Grazie di cuore convincimii</p>
+    <div class="review-verified">✓ Acquisto verificato</div>
+  </div>
+
+  <div class="review-card" data-book="persona-ideale">
+    <div class="review-card-top">
+      <div class="review-author-info">
+        <div class="review-avatar" style="background:#6B3510">A</div>
+        <div>
+          <div class="review-name">Anonimo</div>
+          <div class="review-location">Italia</div>
+        </div>
+      </div>
+      <div class="review-stars">★★★★★</div>
+    </div>
+    <span class="review-book-tag">La tua persona ideale</span>
+    <p class="review-text">Bellissima mi sta piacendo un sacco. Quello che mi ha colpito di più è che concetti che avevo sempre trovato complicati, quelli che di solito ti fanno rileggere il paragrafo tre volte, qui li capisci al primo colpo. Non avevo mai trovato un libro sulle relazioni scritto così. Lo consiglio a chiunque voglia capirsi davvero.</p>
+    <div class="review-verified">✓ Acquisto verificato</div>
+  </div>
+
+  <div class="review-card" data-book="persona-ideale">
+    <div class="review-card-top">
+      <div class="review-author-info">
+        <div class="review-avatar" style="background:#2A5A2A">A</div>
+        <div>
+          <div class="review-name">Anonimo</div>
+          <div class="review-location">Italia</div>
+        </div>
+      </div>
+      <div class="review-stars">★★★★★</div>
+    </div>
+    <span class="review-book-tag">La tua persona ideale</span>
+    <p class="review-text">Ho comprato "La tua persona ideale" ✨. Bellissima mi sta piacendo un sacco. La cosa sorprendente è che spiegate concetti difficili con una semplicità e chiarezza che non avevo mai trovato in altri libri sulle relazioni. Consiglio vivamente di leggerlo 🔥</p>
+    <div class="review-verified">✓ Acquisto verificato</div>
+  </div>
+
+  <div class="review-card" data-book="relazione-ideale">
+    <div class="review-card-top">
+      <div class="review-author-info">
+        <div class="review-avatar" style="background:#3D2408">A</div>
+        <div>
+          <div class="review-name">Anonimo</div>
+          <div class="review-location">Italia</div>
+        </div>
+      </div>
+      <div class="review-stars">★★★★★</div>
+    </div>
+    <span class="review-book-tag">La tua relazione ideale</span>
+    <p class="review-text">Io e la mia fidanzata abbiamo passato un momento difficile circa un anno fa… litigi, incomprensioni e siamo quasi arrivati a lasciarci. Dentro di me ho sempre pensato che i nostri problemi fossero colpa sua, fino a quando abbiamo deciso di leggere il tuo libro, per darci un'ultima possibilità. Da lì in poi le cose sono iniziate a migliorare, ho fatto un lavoro dentro di me e ho riconosciuto alcune dinamiche inconsce che stavano sabotando la relazione alle fondamenta. Non potrò mai ringraziarvi abbastanza. Siete fantastici 🔥💪</p>
+    <div class="review-verified">✓ Acquisto verificato</div>
+  </div>
+
+</div>
+
+<div class="reviews-cta">
+  <a href="/" class="reviews-cta-btn">Scopri i libri →</a>
+</div>
+
+<script>
+function filterReviews(book, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.review-card').forEach(card => {
+    if (book === 'tutti' || card.dataset.book === book) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+</script>
+</body>
+</html>
