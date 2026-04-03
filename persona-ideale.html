@@ -95,20 +95,6 @@ body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--cream); colo
   .trust-green { background:#1a7a3a; color:#fff; }
   .trust-gold { background:#f4a623; color:#fff; }
   .trust-white { background:var(--surface); color:var(--ink); border:1px solid var(--border); }
-  .reviews-section { margin-top:32px; }
-  .reviews-section .section-title { margin-top:0; }
-  .review-slider-wrap { position:relative; }
-  .review-slider { display:flex; gap:10px; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none; cursor:grab; }
-  .review-slider::-webkit-scrollbar { display:none; }
-  .review-slide { scroll-snap-align:start; }
-  .review-slide { flex:0 0 80%; max-width:80%; }
-  .review-img { width:100%; border-radius:10px; display:block; box-shadow:0 2px 12px rgba(24,18,16,0.10); }
-  .review-nav { display:flex; align-items:center; justify-content:center; gap:12px; margin-top:12px; }
-  .review-btn { width:36px; height:36px; border-radius:50%; border:1.5px solid var(--border); background:var(--white); color:var(--ink); font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(24,18,16,0.08); flex-shrink:0; }
-  .review-btn:active { background:var(--surface); }
-  .review-dots { display:flex; gap:6px; }
-  .review-dot { width:6px; height:6px; border-radius:50%; background:var(--border); transition:background 0.2s; }
-  .review-dot.active { background:var(--wine); }
 </style>
 <script src="https://js.stripe.com/v3/"></script>
 </head>
@@ -146,30 +132,6 @@ body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--cream); colo
     <div class="trust-item">
       <div class="trust-icon trust-white">↓</div>
       <span>Download immediato dopo l'acquisto</span>
-    </div>
-
-  <!-- RECENSIONI -->
-  <div class="reviews-section">
-    <p class="section-title">Cosa dicono i lettori</p>
-    <div class="review-slider-wrap">
-      <div class="review-slider" id="slider_persona_ideale">
-      <div class="review-slide"><img class="review-img" src="Recensione_1.PNG" alt="Recensione lettore"></div>
-      <div class="review-slide"><img class="review-img" src="Recensione_1_0.PNG" alt="Recensione lettore"></div>
-      <div class="review-slide"><img class="review-img" src="Recensione_1_1.PNG" alt="Recensione lettore"></div>
-      <div class="review-slide"><img class="review-img" src="Recensione_1_2.PNG" alt="Recensione lettore"></div>
-      <div class="review-slide"><img class="review-img" src="Recensione_1_3.PNG" alt="Recensione lettore"></div>
-      </div>
-      <div class="review-nav">
-        <button class="review-btn" onclick="moveReview('slider_persona_ideale',-1)">‹</button>
-        <div class="review-dots" id="dots_slider_persona_ideale">
-      <span class="review-dot active" onclick="goReview('slider_persona_ideale',0)"></span>
-      <span class="review-dot" onclick="goReview('slider_persona_ideale',1)"></span>
-      <span class="review-dot" onclick="goReview('slider_persona_ideale',2)"></span>
-      <span class="review-dot" onclick="goReview('slider_persona_ideale',3)"></span>
-      <span class="review-dot" onclick="goReview('slider_persona_ideale',4)"></span>
-        </div>
-        <button class="review-btn" onclick="moveReview('slider_persona_ideale',1)">›</button>
-      </div>
     </div>
   </div>
 </div>
@@ -353,54 +315,6 @@ function closePayment() {
 
 document.getElementById('paymentOverlay').addEventListener('click', function(e) {
   if (e.target === this) closePayment();
-});
-</script>
-
-<script>
-function initReview(id) {
-  var sl = document.getElementById(id);
-  if (!sl) return;
-  sl._idx = 0;
-
-  // Update dots on scroll
-  sl.addEventListener('scroll', function() {
-    var slideW = sl.querySelector('.review-slide').offsetWidth + 10;
-    var idx = Math.round(sl.scrollLeft / slideW);
-    sl._idx = idx;
-    var dots = document.querySelectorAll('#dots_' + id + ' .review-dot');
-    dots.forEach(function(d,i) { d.classList.toggle('active', i === idx); });
-  });
-
-  // Mouse drag
-  var isDown = false, startX, scrollLeft;
-  sl.addEventListener('mousedown', function(e) { isDown=true; sl.style.cursor='grabbing'; startX=e.pageX-sl.offsetLeft; scrollLeft=sl.scrollLeft; });
-  sl.addEventListener('mouseleave', function() { isDown=false; sl.style.cursor='grab'; });
-  sl.addEventListener('mouseup', function() { isDown=false; sl.style.cursor='grab'; });
-  sl.addEventListener('mousemove', function(e) { if(!isDown) return; e.preventDefault(); var x=e.pageX-sl.offsetLeft; sl.scrollLeft=scrollLeft-(x-startX); });
-}
-
-function moveReview(id, dir) {
-  var sl = document.getElementById(id);
-  var slides = sl.querySelectorAll('.review-slide');
-  var total = slides.length;
-  if (sl._idx === undefined) sl._idx = 0;
-  sl._idx = (sl._idx + dir + total) % total;
-  var slideW = slides[0].offsetWidth + 10;
-  sl.scrollTo({ left: sl._idx * slideW, behavior: 'smooth' });
-}
-
-function goReview(id, i) {
-  var sl = document.getElementById(id);
-  var slides = sl.querySelectorAll('.review-slide');
-  sl._idx = i;
-  var slideW = slides[0].offsetWidth + 10;
-  sl.scrollTo({ left: i * slideW, behavior: 'smooth' });
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.review-slider').forEach(function(sl) {
-    initReview(sl.id);
-  });
 });
 </script>
 </body>
