@@ -230,6 +230,11 @@ body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--cream); colo
     </div>
     <div class="payment-body" id="payBody">
       <div class="payment-summary" id="paySummary"></div>
+      <div style="margin-bottom:14px;">
+        <label style="font-size:12px;font-weight:600;color:var(--muted);letter-spacing:0.5px;display:block;margin-bottom:6px;">EMAIL — riceverai il libro qui</label>
+        <input type="email" id="customerEmail" placeholder="La tua email" required
+          style="width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;color:var(--ink);background:var(--white);outline:none;box-sizing:border-box;">
+      </div>
       <div id="payment-element"></div>
       <button class="pay-btn" id="payBtn" onclick="submitPayment()">
         <div class="spinner"></div>
@@ -293,7 +298,7 @@ async function openPayment(bookId, upsellId) {
     var res = await fetch('/api/create-payment-intent', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ bookId: bookId, upsellId: upsellId })
+      body: JSON.stringify({ bookId: bookId, upsellId: upsellId, email: (document.getElementById('customerEmail') || {}).value || '' })
     });
     var data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Errore del server');
@@ -331,13 +336,24 @@ async function openPayment(bookId, upsellId) {
 async function submitPayment() {
   var btn = document.getElementById('payBtn');
   var errEl = document.getElementById('payError');
+  var emailEl = document.getElementById('customerEmail');
+  var email = emailEl ? emailEl.value.trim() : '';
+  if (!email || !email.includes('@')) {
+    errEl.textContent = 'Inserisci una email valida per ricevere il libro.';
+    errEl.style.display = 'block';
+    return;
+  }
   btn.classList.add('loading');
   btn.disabled = true;
   errEl.style.display = 'none';
   try {
     var result = await stripeInstance.confirmPayment({
       elements: stripeElements,
-      confirmParams: { return_url: window.location.origin + '?success=true' },
+      confirmParams: {
+        return_url: window.location.origin + '?success=true',
+        receipt_email: email,
+        payment_method_data: { billing_details: { email: email } }
+      },
       redirect: 'if_required'
     });
     if (result.error) {
