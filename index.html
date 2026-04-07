@@ -898,8 +898,1478 @@
 
 <!-- FOOTER -->
 <footer>
-  <p>© 2025 Convincimi · <a href="#">Privacy</a> · <a href="#">Termini</a> · <a href="#">Contatti</a></p>
+  <p>© 2025 Marketing Brothers Ltd · <a href="/privacy.html">Privacy Policy</a> · <a href="/termini.html">Termini e Condizioni</a> · <a href="/cookie.html">Cookie Policy</a> · <a href="mailto:convincimii@gmail.com">Contatti</a></p>
 </footer>
+
+<!-- COOKIE BANNER -->
+<div id="cookieBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#1A1208;color:#fff;padding:16px 20px;z-index:9999;box-shadow:0 -4px 24px rgba(0,0,0,0.3);">
+  <div style="max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:12px;">
+    <p style="font-size:13px;line-height:1.6;color:rgba(245,240,232,0.85);margin:0;">
+      🍪 Usiamo cookie tecnici necessari al funzionamento del sito e per la sicurezza dei pagamenti (Stripe). Nessun cookie pubblicitario.
+      <a href="/cookie.html" style="color:#C9A84C;text-decoration:underline;">Cookie Policy</a> · 
+      <a href="/privacy.html" style="color:#C9A84C;text-decoration:underline;">Privacy Policy</a>
+    </p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button onclick="acceptCookies()" style="padding:10px 22px;background:#C9A84C;color:#1A1208;border:none;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">Accetta</button>
+      <button onclick="rejectCookies()" style="padding:10px 22px;background:transparent;color:rgba(245,240,232,0.6);border:1px solid rgba(245,240,232,0.2);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;cursor:pointer;">Solo necessari</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  if (!localStorage.getItem('cookie_consent')) {
+    document.getElementById('cookieBanner').style.display = 'block';
+  }
+})();
+function acceptCookies() {
+  localStorage.setItem('cookie_consent', 'accepted');
+  document.getElementById('cookieBanner').style.display = 'none';
+}
+function rejectCookies() {
+  localStorage.setItem('cookie_consent', 'rejected');
+  document.getElementById('cookieBanner').style.display = 'none';
+}
+</script>
+
+<!-- PAYMENT MODAL -->
+<div class="payment-overlay" id="paymentOverlay">
+  <div class="payment-modal" id="paymentModal">
+    <div class="payment-modal-header">
+      <h3 id="paymentTitle">Completa l'acquisto</h3>
+      <span class="payment-amount" id="paymentAmount"></span>
+      <button class="payment-close" onclick="closePaymentModal()">✕</button>
+    </div>
+    <div class="payment-body" id="paymentBody">
+      <div class="payment-summary" id="paymentSummary"></div>
+      <div id="stripe-elements-container">
+        <div id="payment-element"></div>
+      </div>
+      <button class="pay-btn" id="payBtn" onclick="submitPayment()">
+        <div class="spinner"></div>
+        <span class="btn-text">Paga ora →</span>
+      </button>
+      <div class="payment-error" id="paymentError"></div>
+      <div class="payment-secure">🔒 Pagamento sicuro con Stripe</div>
+    </div>
+    <div class="payment-success" id="paymentSuccess">
+      <div class="success-icon">🎉</div>
+      <h3>Acquisto completato!</h3>
+      <p>Grazie per il tuo acquisto. Riceverai una email con il link per scaricare la tua guida digitale.</p>
+    </div>
+  </div>
+</div>
+
+<!-- MICRO NOTIFICATIONS -->
+<div class="micro-notif" id="microNotif"></div>
+
+<!-- PRODUCT PAGES -->
+<div class="product-page" id="productPage">
+  <div class="product-header">
+    <button class="product-back" onclick="closeProductPage()">←</button>
+    <div class="product-header-title" id="productHeaderTitle"></div>
+  </div>
+  <div class="product-body">
+    <div class="product-cover-hero">
+      <div class="product-cover-hero-bg" id="productCoverBg">
+        <div class="product-ebook-mockup" id="productMockup">
+          <div class="product-ebook-title" id="productMockupTitle"></div>
+          <div class="product-ebook-brand">Convincimi</div>
+        </div>
+      </div>
+    </div>
+    <div class="product-content">
+      <span class="product-tag" id="productTag"></span>
+      <h1 class="product-title" id="productTitle"></h1>
+      <p class="product-tagline" id="productTagline"></p>
+      <p class="product-section-title">Il libro</p>
+      <p class="product-description" id="productDescription"></p>
+      <div id="productPointsWrap" style="display:none">
+        <p class="product-section-title" style="margin-top:22px">Cosa imparerai</p>
+        <ul class="product-points" id="productPoints"></ul>
+      </div>
+      <p class="product-nb" id="productNb"></p>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKOUT BAR (shown on product page) -->
+<div class="checkout-bar hidden" id="checkoutBar">
+  <div class="checkout-price-block">
+    <span class="checkout-price" id="checkoutPrice"></span>
+    <span class="checkout-label">Formato digitale</span>
+  </div>
+  <button class="checkout-cta" id="checkoutCta">Acquista ora →</button>
+</div>
+
+<!-- UPSELL MODAL -->
+<div class="modal-overlay" id="upsellModal">
+  <div class="modal">
+    <div class="modal-header">
+      <p class="eyebrow">Offerta esclusiva — solo adesso</p>
+      <h3>Aspetta — c'è <em>qualcosa</em> per il tuo percorso</h3>
+    </div>
+    <div class="modal-body">
+      <p class="modal-reason" id="modalReason"></p>
+      <div class="modal-book">
+        <div class="modal-book-cover" id="modalCover"></div>
+        <div class="modal-book-info">
+          <h4 id="modalBookName"></h4>
+          <p id="modalBookDesc"></p>
+          <div class="modal-price-row">
+            <span class="modal-price-new" id="modalPriceNew"></span>
+            <span class="modal-price-old" id="modalPriceOld"></span>
+            <span class="modal-badge">−50%</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-timer">Offerta disponibile per i prossimi <span id="timerDisplay">14:59</span></div>
+      <button class="modal-cta" onclick="addBothToCart()">Sì, lo aggiungo al mio ordine →</button>
+      <button class="modal-skip" onclick="proceedWithoutUpsell()">No grazie, procedo solo con questa guida</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── DATA ──
+const books = {
+  1:{
+    title:"La tua persona ideale",
+    tag:"Scelta del partner",
+    tagline:"Capisci chi sei e cosa cerchi davvero prima di scegliere un partner.",
+    description:"C'è chi ha amato la persona sbagliata, chiudendo gli occhi davanti a tutto pur di non perderla.\nE chi ha perso quella giusta, perché non ha saputo tenerla stretta quando ce n'era bisogno…\n\nQuesto succede quando scegliamo un partner senza prima aver ben chiaro chi siamo e cosa stiamo cercando davvero.\n\nHo scritto questo libro per aiutarti in questa scelta. Per farti capire i tuoi schemi, i tuoi bisogni nascosti e le trappole emotive che ti portano a scegliere sempre lo stesso tipo di persona — anche quando sai già come va a finire.",
+    points:[],
+    nb:"📱 Formato digitale",
+    color:"linear-gradient(155deg,#2C1A2E 0%,#6B1F2A 55%,#9B3A4A 100%)",
+    upsell:2,
+    price:14.97,
+    link:"#checkout-1"
+  },
+  2:{
+    title:"La tua relazione ideale",
+    tag:"Dinamiche relazionali",
+    tagline:"Esci dalle dinamiche tossiche. Costruisci relazioni che non ti distruggono.",
+    description:"Tutti noi siamo stati vittima dei meccanismi tossici delle relazioni, ci siamo fatti risucchiare da quel vortice e ne siamo usciti a pezzi.\n\nPer questo ho deciso di scrivere un manuale che ti guida nelle tue relazioni. Non ti dirò solo cosa evitare — ti mostrerò come costruire qualcosa di diverso, qualcosa che dura.\n\nOgni volta che commetti lo stesso errore, lasci indietro un pezzo di te. Questo libro ti aiuta a smettere.",
+    points:["Capire le dinamiche relazionali","Gestire ex e conflitti senza dimenticare chi sei","Ricostruire relazioni sane","Farti rispettare senza elemosinare attenzione","Individuare le manipolazioni"],
+    nb:"📱 Formato digitale",
+    color:"linear-gradient(155deg,#0F1C2E 0%,#1A3A5C 55%,#2B5888 100%)",
+    upsell:3,
+    price:19.97,
+    link:"#checkout-2"
+  },
+  3:{
+    title:"I codici segreti della mente di LUI e LEI",
+    tag:"Psicologia",
+    tagline:"Leggi la mente del sesso opposto. Narcisismo, attrazione, tradimento.",
+    description:"Uomini e donne pensano, sentono e desiderano in modi così diversi da sembrare quasi inconciliabili, eppure guidati da una logica nascosta che pochi conoscono.\n\nQuanto ti piacerebbe capire perché lui sparisce dopo un litigio, o perché lei dice 'sto bene' quando non lo è? Questo libro ti dà gli strumenti per leggere l'altro senza dover indovinare.",
+    points:["Dentro la mente maschile","Dentro la mente femminile","Come leggere la mente del sesso opposto","Psicologia dietro manipolazioni e tradimento","Narcisismo maschile e femminile","Segreti dell'attrazione sessuale uomo-donna"],
+    nb:"📱 Formato digitale",
+    color:"linear-gradient(155deg,#1C1208 0%,#3A1A08 50%,#6B3510 100%)",
+    upsell:1,
+    price:19.97,
+    link:"#checkout-3"
+  },
+  4:{
+    title:"Guida al potere sociale COMPLETA",
+    tag:"Potere · Persuasione",
+    tagline:"Dinamiche di potere, persuasione e come difendersi dai manipolatori.",
+    description:"Dietro ogni interazione si nascondono dinamiche di potere e strategie invisibili. Comprenderli significa decifrare i comportamenti altrui e ottenere vantaggio nelle relazioni e nella vita quotidiana.\n\nQuesto non è un libro su come manipolare gli altri. È un libro su come smettere di essere manipolato, e come comunicare in modo che gli altri ti rispettino davvero.",
+    points:["Meccanismi di potere e influenza sociale","Psicologia della persuasione e manipolazione","Tecniche di seduzione","Come riconoscere e difendersi da manipolatori e narcisisti","Segreti della comunicazione efficace per dominare ogni contesto"],
+    nb:"📱 Formato digitale · Parte 1 e 2",
+    color:"linear-gradient(155deg,#0E1A0E 0%,#1A3A1A 50%,#2A5A2A 100%)",
+    upsell:3,
+    price:24.97,
+    link:"#checkout-4"
+  },
+  5:{
+    title:"Convincimi ULTIMATE",
+    tag:"Pacchetto completo",
+    tagline:"La raccolta definitiva di tutti i libri Convincimi in un unico pacchetto.",
+    description:"Convincimi ULTIMATE è la raccolta definitiva di tutti i libri scritti dalla mente di Convincimi.\n\nTutto quello che ti serve per capire te stesso, l'altro, le dinamiche di potere e come costruire relazioni che funzionano davvero — in un unico pacchetto digitale.\n\nSe hai già in mente più di un libro, questa è la scelta più intelligente. Risparmi quasi 30 euro rispetto all'acquisto separato.",
+    points:["La tua persona ideale","La tua relazione ideale","I codici segreti della mente di LUI e LEI","Guida al potere sociale COMPLETA (parte 1 e 2)"],
+    nb:"📱 Tutti i formati digitali inclusi",
+    color:"linear-gradient(155deg,#1A1208 0%,#3D2408 40%,#6B1F2A 75%)",
+    upsell:0,
+    price:49.97,
+    origPrice:79.88,
+    link:"#checkout-bundle"
+  }
+};
+
+const upsellReasons={
+  "1→2":"Una volta che capisci chi cercare, il passo più difficile è non sabotare la relazione quando arriva. Questa guida ti aiuta a non ripetere gli stessi errori.",
+  "2→3":"Hai imparato a gestire la relazione — ora scopri come funziona davvero la testa di chi hai accanto. Meno incomprensioni, più controllo.",
+  "3→1":"Ora che capisci come funziona la mente dell'altro, il vero salto è capire cosa vuoi tu — così smetti di attirare sempre lo stesso tipo.",
+  "4→3":"Il potere nelle relazioni si esercita prima di tutto con il partner. Questa guida ti dà la chiave per leggere la sua mente."
+};
+
+// ── DRAWER ──
+function toggleDrawer(){const d=document.getElementById('navDrawer'),b=document.getElementById('hamburgerBtn');const o=d.classList.toggle('open');b.classList.toggle('open',o);document.body.style.overflow=o?'hidden':'';}
+function closeDrawer(){document.getElementById('navDrawer').classList.remove('open');document.getElementById('hamburgerBtn').classList.remove('open');document.body.style.overflow='';}
+
+// ── PRODUCT PAGE ──
+let currentProductId = null;
+function openProductPage(id){
+  currentProductId = id;
+  const b = books[id];
+  const page = document.getElementById('productPage');
+  const bar = document.getElementById('checkoutBar');
+
+  document.getElementById('productHeaderTitle').textContent = b.title;
+  document.getElementById('productTag').textContent = b.tag;
+  document.getElementById('productTitle').textContent = b.title;
+  document.getElementById('productTagline').textContent = b.tagline;
+  document.getElementById('productDescription').textContent = b.description;
+  document.getElementById('productNb').textContent = b.nb;
+  const mockupTitle = document.getElementById('productMockupTitle');
+  if(mockupTitle) mockupTitle.textContent = b.title;
+
+  const coverImages = {
+    1: 'cover1.png',
+    2: 'cover2.png',
+    3: 'cover3.png',
+    4: 'cover4.png',
+    5: 'cover5.png'
+  };
+
+  const bannerImages = {
+    1: 'banner1.png',
+    2: 'banner2.png',
+    3: 'banner3.png',
+    4: 'banner4.png',
+    5: 'banner5.png'
+  };
+
+  const bg = document.getElementById('productCoverBg');
+  bg.style.background = 'none';
+  bg.style.padding = '0';
+  bg.innerHTML = `<img src="${bannerImages[id]}" alt="${b.title}" style="width:100%;height:100%;object-fit:cover;display:block;">`;
+
+  const mockup = document.getElementById('productMockup');
+  if(mockup) mockup.style.display = 'none';
+
+  // Points
+  const wrap = document.getElementById('productPointsWrap');
+  const ul = document.getElementById('productPoints');
+  ul.innerHTML = '';
+  if(b.points && b.points.length > 0){
+    wrap.style.display = 'block';
+    b.points.forEach(p=>{const li=document.createElement('li');li.textContent=p;ul.appendChild(li);});
+  } else {
+    wrap.style.display = 'none';
+  }
+
+  // Checkout bar
+  const fmt = p => p.toFixed(2).replace('.',',')+' €';
+  document.getElementById('checkoutPrice').textContent = fmt(b.price);
+  const cta = document.getElementById('checkoutCta');
+
+  if(id === 5){
+    cta.textContent = 'Prendi il pacchetto →';
+    cta.onclick = () => goToCheckout(5);
+  } else {
+    cta.textContent = 'Acquista ora →';
+    cta.onclick = () => triggerUpsell(id);
+  }
+
+  page.classList.add('active');
+  bar.classList.remove('hidden');
+  page.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeProductPage(){
+  const page = document.getElementById('productPage');
+  const bar = document.getElementById('checkoutBar');
+  page.classList.remove('active');
+  bar.classList.add('hidden');
+  document.body.style.overflow = '';
+  currentProductId = null;
+}
+
+// ── UPSELL ──
+let currentBook=null,currentUpsell=null,timerInterval=null,timerSeconds=899;
+function fmt(p){return p.toFixed(2).replace('.',',')+' €';}
+
+function triggerUpsell(id){
+  const uid = books[id].upsell;
+  if(!uid){goToCheckout(id);return;}
+  currentBook=id; currentUpsell=uid;
+  const u=books[uid];
+  document.getElementById('modalReason').textContent=upsellReasons[`${id}→${uid}`]||"Chi legge questa guida di solito ne abbina una seconda.";
+  document.getElementById('modalCover').style.background='none';
+  document.getElementById('modalCover').style.padding='0';
+  document.getElementById('modalCover').style.overflow='hidden';
+  document.getElementById('modalCover').innerHTML=`<img src="cover${uid}.png" alt="${u.title}" style="width:100%;height:100%;object-fit:cover;border-radius:6px;display:block;">`;
+  document.getElementById('modalBookName').textContent=u.title;
+  document.getElementById('modalBookDesc').textContent=u.tagline;
+  document.getElementById('modalPriceNew').textContent=fmt(u.price/2);
+  document.getElementById('modalPriceOld').textContent=fmt(u.price);
+  timerSeconds=899; updateTimer();
+  if(timerInterval)clearInterval(timerInterval);
+  timerInterval=setInterval(()=>{timerSeconds--;if(timerSeconds<=0){clearInterval(timerInterval);document.getElementById('timerDisplay').textContent="scaduta";}else updateTimer();},1000);
+  document.getElementById('upsellModal').classList.add('active');
+}
+
+function updateTimer(){const m=Math.floor(timerSeconds/60),s=timerSeconds%60;document.getElementById('timerDisplay').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;}
+function closeModal(){document.getElementById('upsellModal').classList.remove('active');if(timerInterval)clearInterval(timerInterval);}
+function addBothToCart(){ openPaymentModal(currentBook, currentUpsell); closeModal(); }
+function proceedWithoutUpsell(){ openPaymentModal(currentBook, null); closeModal(); }
+function goToCheckout(id){ openPaymentModal(id, null); }
+document.getElementById('upsellModal').addEventListener('click',function(e){if(e.target===this)proceedWithoutUpsell();});
+
+// ── STRIPE PAYMENT ──
+const stripe = (typeof Stripe !== 'undefined') ? Stripe('pk_live_51SNsVxFyO2awdoWu2til2JsyR5O5TiLnw3yu1B3EIjiuG88gEALFxJwopG5xmFVnrexN071yIhlHSMdBHf8Y1srq00avLuDeTQ') : null;
+let stripeElements = null;
+let currentPaymentBookId = null;
+let currentPaymentUpsellId = null;
+
+async function openPaymentModal(bookId, upsellId) {
+  currentPaymentBookId = bookId;
+  currentPaymentUpsellId = upsellId;
+
+  const overlay = document.getElementById('paymentOverlay');
+  const body = document.getElementById('paymentBody');
+  const success = document.getElementById('paymentSuccess');
+  const errorEl = document.getElementById('paymentError');
+  const payBtn = document.getElementById('payBtn');
+
+  body.style.display = 'block';
+  success.classList.remove('active');
+  errorEl.style.display = 'none';
+  payBtn.classList.remove('loading');
+  payBtn.disabled = false;
+
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+
+  // Close any open product page
+  closeProductPage();
+
+  try {
+    const res = await fetch('/api/create-payment-intent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ bookId, upsellId })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.error || 'Errore del server');
+
+    // Update UI
+    const euros = (data.amount / 100).toFixed(2).replace('.', ',') + ' €';
+    document.getElementById('paymentAmount').textContent = euros;
+    document.getElementById('paymentTitle').textContent = upsellId ? 'Pacchetto acquisto' : 'Completa l\'acquisto';
+    document.getElementById('paymentSummary').innerHTML = `<strong>Acquisto:</strong> ${data.description}`;
+
+    // Init Stripe Elements
+    stripeElements = stripe.elements({
+      clientSecret: data.clientSecret,
+      appearance: {
+        theme: 'stripe',
+        variables: {
+          colorPrimary: '#7B4A2D',
+          colorBackground: '#F6F1EA',
+          colorText: '#181210',
+          colorDanger: '#c0392b',
+          fontFamily: 'Plus Jakarta Sans, sans-serif',
+          borderRadius: '10px',
+        }
+      }
+    });
+
+    const paymentElement = stripeElements.create('payment');
+    document.getElementById('payment-element').innerHTML = '';
+    paymentElement.mount('#payment-element');
+
+  } catch (err) {
+    document.getElementById('paymentError').textContent = err.message;
+    document.getElementById('paymentError').style.display = 'block';
+  }
+}
+
+async function submitPayment() {
+  const payBtn = document.getElementById('payBtn');
+  const errorEl = document.getElementById('paymentError');
+
+  payBtn.classList.add('loading');
+  payBtn.disabled = true;
+  errorEl.style.display = 'none';
+
+  try {
+    const { error } = await stripe.confirmPayment({
+      elements: stripeElements,
+      confirmParams: {
+        return_url: window.location.origin + '?success=true',
+      },
+      redirect: 'if_required'
+    });
+
+    if (error) {
+      errorEl.textContent = error.message;
+      errorEl.style.display = 'block';
+      payBtn.classList.remove('loading');
+      payBtn.disabled = false;
+    } else {
+      // Pagamento riuscito
+      document.getElementById('paymentBody').style.display = 'none';
+      document.getElementById('paymentSuccess').classList.add('active');
+      document.getElementById('checkoutBar').classList.add('hidden');
+    }
+  } catch (err) {
+    errorEl.textContent = 'Errore durante il pagamento. Riprova.';
+    errorEl.style.display = 'block';
+    payBtn.classList.remove('loading');
+    payBtn.disabled = false;
+  }
+}
+
+function closePaymentModal() {
+  document.getElementById('paymentOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+  if (stripeElements) {
+    stripeElements = null;
+    document.getElementById('payment-element').innerHTML = '';
+  }
+}
+
+document.getElementById('paymentOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closePaymentModal();
+});
+
+// Check success on page load
+if (window.location.search.includes('success=true')) {
+  setTimeout(() => {
+    document.getElementById('paymentOverlay').classList.add('active');
+    document.getElementById('paymentBody').style.display = 'none';
+    document.getElementById('paymentSuccess').classList.add('active');
+  }, 500);
+}
+
+// ── SIDE PANEL ──
+let sidePanelTimer=null,sidePanelSecs=null;
+// Inizializza il timer solo la prima volta
+function initSideTimer(){
+  if(sidePanelSecs !== null) return; // già avviato
+  sidePanelSecs = 59 * 60; // 59 minuti
+  updateSideTimer();
+  sidePanelTimer = setInterval(()=>{
+    sidePanelSecs--;
+    if(sidePanelSecs<=0){
+      clearInterval(sidePanelTimer);
+      const el = document.getElementById('sidePanelTimer');
+      if(el) el.textContent='scaduta';
+    } else {
+      updateSideTimer();
+    }
+  },1000);
+}
+function openSidePanel(){
+  document.getElementById('sidePanel').classList.add('open');
+  document.getElementById('sidePanelOverlay').classList.add('active');
+  document.body.style.overflow='hidden';
+  initSideTimer();
+}
+function closeSidePanel(){document.getElementById('sidePanel').classList.remove('open');document.getElementById('sidePanelOverlay').classList.remove('active');document.body.style.overflow='';}
+function updateSideTimer(){const m=Math.floor(sidePanelSecs/60),s=sidePanelSecs%60;const el=document.getElementById('sidePanelTimer');if(el)el.textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;}
+
+// ── MICRO NOTIFICATIONS ──
+const notifications=[
+  {name:"Giulia M.", city:"Vicenza", text:"\"Finalmente capisco perché scelgo sempre le persone sbagliate.\""},
+  {name:"Marco T.", city:"Milano", text:"\"Ho smesso di ripetere gli stessi errori in amore.\""},
+  {name:"Sara L.", city:"Roma", text:"\"Ho riconosciuto il narcisista grazie a questo libro.\""},
+  {name:"Luca R.", city:"Torino", text:"\"Non avrei mai pensato di capire così bene la mente di lei.\""},
+  {name:"Chiara B.", city:"Bologna", text:"\"Mi ha aiutata a uscire da una relazione tossica.\""},
+  {name:"Andrea F.", city:"Napoli", text:"\"Ora so esattamente cosa cerco in una relazione.\""},
+  {name:"Valentina C.", city:"Firenze", text:"\"Ho finalmente smesso di elemosinare attenzione.\""},
+  {name:"Matteo G.", city:"Venezia", text:"\"Capire le dinamiche di potere ha cambiato tutto.\""},
+];
+let notifIndex=0;
+function showNextNotif(){
+  const container=document.getElementById('microNotif');
+  const old=container.querySelector('.notif-pill');
+  if(old){old.classList.remove('show');setTimeout(()=>old.remove(),400);}
+  setTimeout(()=>{
+    const n=notifications[notifIndex%notifications.length];
+    const pill=document.createElement('div');
+    pill.className='notif-pill';
+    pill.innerHTML=`<div class="notif-pill-top"><span class="notif-pill-icon">👤</span><div><div class="notif-pill-name">${n.name} <span class="notif-pill-city">· ${n.city}</span></div><div class="notif-pill-stars">★★★★★</div></div></div><div class="notif-pill-text">${n.text}</div>`;
+    container.appendChild(pill);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>pill.classList.add('show')));
+    notifIndex++;
+  },old?500:0);
+}
+setTimeout(()=>{showNextNotif();setInterval(showNextNotif,5000);},3000);
+
+// ── STATIC PAGES ──
+function openPage(name){
+  const map = { newsletter:'newsletterPage', chisiamo:'chisiamoPage' };
+  const el = document.getElementById(map[name]);
+  if(el){ el.classList.add('active'); document.body.style.overflow='hidden'; }
+}
+function closePage(name){
+  const map = { newsletter:'newsletterPage', chisiamo:'chisiamoPage' };
+  const el = document.getElementById(map[name]);
+  if(el){ el.classList.remove('active'); document.body.style.overflow=''; }
+}
+function handleNewsletterPageSubmit(e){
+  e.preventDefault();
+  const btn = document.getElementById('newsletterPageBtn');
+  btn.textContent = '✓ Iscritto!';
+  btn.style.background = '#2A5A2A';
+  btn.style.color = '#fff';
+  document.getElementById('newsletterPageEmail').disabled = true;
+}
+  e.preventDefault();
+// ── NEWSLETTER ──
+function handleNewsletterSubmit(e){
+  e.preventDefault();
+  const btn=e.target.querySelector('button');
+  btn.textContent="✓ Iscritto";btn.style.background="#2A5A2A";
+  e.target.querySelector('input').disabled=true;
+}
+
+// ── SCROLL REVEAL ──
+const obs=new IntersectionObserver(entries=>{entries.forEach(en=>{if(en.isIntersecting){en.target.classList.add('visible');obs.unobserve(en.target);}});},{threshold:0.01});
+document.querySelectorAll('.book-card').forEach(c=>{obs.observe(c);});
+// Fallback: mostra subito se IntersectionObserver non funziona (es. file locale)
+setTimeout(()=>{ document.querySelectorAll('.book-card:not(.visible)').forEach(c=>c.classList.add('visible')); }, 300);
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Convincimi — Guide sulle relazioni</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #fbf6f0;
+    --ink: #1A1208;
+    --wine: #7B3D1E;
+    --wine-light: #9A5030;
+    --gold: #C9A84C;
+    --gold-pale: #E8D5A0;
+    --muted: #7A6F60;
+    --surface: #F2F0EB;
+    --border: #E0D8CC;
+    --white: #FFFFFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--cream);
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    border-bottom: 1px solid var(--border);
+  }
+  .hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+  .hamburger span { display: block; width: 22px; height: 2px; background: var(--ink); border-radius: 2px; transition: all 0.25s ease; }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .logo-circle { width: 42px; height: 42px; border-radius: 50%; overflow: hidden; flex-shrink: 0; background: var(--ink); }
+  .logo-circle img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+  .header-spacer { width: 30px; }
+
+  /* ── NAV DRAWER ── */
+  .nav-drawer { position: fixed; inset: 0; z-index: 300; pointer-events: none; }
+  .nav-drawer-overlay { position: absolute; inset: 0; background: rgba(24,18,16,0.55); opacity: 0; transition: opacity 0.3s ease; backdrop-filter: blur(3px); }
+  .nav-drawer-panel { position: absolute; top: 0; left: 0; width: 72vw; max-width: 280px; height: 100%; background: var(--ink); padding: 56px 0 40px; transform: translateX(-100%); transition: transform 0.32s cubic-bezier(0.4,0,0.2,1); }
+  .nav-drawer.open { pointer-events: all; }
+  .nav-drawer.open .nav-drawer-overlay { opacity: 1; }
+  .nav-drawer.open .nav-drawer-panel { transform: translateX(0); }
+  .nav-drawer-close { position: absolute; top: 16px; right: 16px; background: none; border: none; color: rgba(245,240,232,0.5); font-size: 20px; cursor: pointer; }
+  .nav-drawer-logo { padding: 0 26px 28px; border-bottom: 1px solid rgba(255,255,255,0.07); margin-bottom: 10px; }
+  .nav-drawer-logo span { font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
+  .nav-links { list-style: none; }
+  .nav-links li a { display: flex; align-items: center; gap: 13px; padding: 15px 26px; color: rgba(245,240,232,0.72); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s, background 0.2s; border-left: 2px solid transparent; }
+  .nav-links li a:hover { color: var(--cream); background: rgba(255,255,255,0.04); border-left-color: var(--gold); }
+  .nav-icon { font-size: 16px; width: 20px; text-align: center; opacity: 0.7; }
+
+  /* ── HERO ── */
+  .hero { padding: 32px 22px 28px; text-align: center; }
+  .hero h1 { font-size: clamp(24px, 7vw, 38px); font-weight: 700; line-height: 1.2; letter-spacing: -0.5px; color: var(--ink); }
+  .hero h1 em { font-style: italic; font-weight: 600; color: var(--wine); }
+
+  /* ── PROOF ── */
+  .proof-band { background: var(--ink); padding: 20px 14px; }
+  .proof-band-inner { display: grid; grid-template-columns: repeat(3,1fr); text-align: center; }
+  .proof-item { padding: 0 6px; }
+  .proof-item + .proof-item { border-left: 1px solid rgba(201,168,76,0.2); }
+  .proof-stat { font-size: 20px; font-weight: 700; color: var(--gold); line-height: 1; margin-bottom: 4px; }
+  .proof-label { font-size: 10px; color: rgba(245,240,232,0.4); line-height: 1.4; }
+
+  /* ── BOOKS HEADING ── */
+  .books-heading { padding: 30px 18px 6px; text-align: center; }
+  .books-heading h2 { font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); }
+
+  /* ── BOOKS SECTION ── */
+  .books-section { padding: 14px 14px 28px; display: flex; flex-direction: column; gap: 14px; max-width: 560px; margin: 0 auto; }
+
+  /* ── BOOK CARD — cover LEFT, text RIGHT ── */
+  .book-card {
+    background: var(--white);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 10px rgba(24,18,16,0.06);
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    min-height: 200px;
+    opacity: 1;
+    position: relative;
+    cursor: pointer;
+  }
+
+  /* Cover — LEFT */
+  .book-cover-area {
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px 0 0 16px;
+    flex-shrink: 0;
+  }
+  .book-cover-placeholder {
+    width: 100%; height: 100%;
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover-spine {
+    width: 68px; height: 96px;
+    border-radius: 3px 8px 8px 3px;
+    display: flex; flex-direction: column;
+    justify-content: flex-end;
+    padding: 8px 7px;
+    box-shadow: -3px 3px 12px rgba(0,0,0,0.3), inset -2px 0 0 rgba(0,0,0,0.15);
+    position: relative; overflow: hidden; flex-shrink: 0;
+  }
+  .cover-spine-title { font-size: 7.5px; font-weight: 700; color: rgba(245,240,232,0.92); line-height: 1.25; position: relative; z-index: 1; }
+  .cover-spine-brand { font-size: 6.5px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(245,240,232,0.4); margin-top: 5px; position: relative; z-index: 1; }
+
+  /* Info — RIGHT */
+  .book-info {
+    padding: 14px 14px 14px 12px;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+  }
+  .book-tag { display: inline-block; font-size: 9px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--wine); background: rgba(123,74,45,0.08); padding: 3px 8px; border-radius: 20px; margin-bottom: 6px; width: fit-content; }
+  .book-title { font-size: 15px; font-weight: 700; line-height: 1.2; letter-spacing: -0.2px; color: var(--ink); margin-bottom: 5px; }
+  .book-tagline { font-size: 11.5px; color: var(--muted); line-height: 1.5; flex: 1; }
+
+  .book-bottom {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    margin-top: 10px; gap: 8px;
+  }
+  .book-price-block { display: flex; flex-direction: column; }
+  .book-price { font-size: 21px; font-weight: 700; color: var(--ink); letter-spacing: -0.4px; line-height: 1; display: block; }
+  .book-price-orig { font-size: 12px; font-weight: 400; color: var(--muted); text-decoration: line-through; display: block; margin-top: 2px; }
+  .book-discount-badge { font-size: 9px; font-weight: 700; background: var(--wine); color: #fff; padding: 2px 5px; border-radius: 4px; margin-left: 5px; vertical-align: middle; }
+
+  .cta-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 9px 15px;
+    background: var(--wine); color: #fff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.8px; text-transform: uppercase;
+    border-radius: 10px; cursor: pointer; border: none;
+    transition: background 0.2s, transform 0.15s;
+    box-shadow: 0 3px 12px rgba(123,74,45,0.28);
+    white-space: nowrap; -webkit-appearance: none;
+  }
+  .cta-btn:active { transform: scale(0.97); background: var(--wine-light); }
+
+  /* ── BUNDLE CARD ── */
+  .bundle-card { grid-template-columns: 1fr; border: 2px solid var(--gold); background: linear-gradient(160deg,#FFFEF9 0%,#FDF8EE 100%); min-height: auto; cursor: pointer; }
+  .bundle-ribbon { position: absolute; top: -1px; right: 18px; background: var(--gold); color: var(--ink); font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 12px; border-radius: 0 0 8px 8px; z-index: 5; }
+  .bundle-covers-strip { display: flex; justify-content: center; align-items: flex-end; gap: 8px; padding: 22px 16px 0; min-height: 130px; }
+  .bundle-mini { border-radius: 5px; box-shadow: 2px 4px 12px rgba(24,18,16,0.25); overflow: hidden; flex-shrink: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 5px 4px; }
+  .bundle-mini:nth-child(1) { width: 48px; height: 68px; }
+  .bundle-mini:nth-child(2) { width: 48px; height: 78px; }
+  .bundle-mini:nth-child(3) { width: 48px; height: 84px; }
+  .bundle-mini:nth-child(4) { width: 48px; height: 78px; }
+  .bundle-mini-label { font-size: 6.5px; font-weight: 600; color: rgba(245,240,232,0.85); line-height: 1.2; position: relative; z-index: 1; }
+  .bundle-info { padding: 14px 16px 18px; text-align: center; }
+  .bundle-tag { display: inline-block; font-size: 9px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--wine); background: rgba(123,74,45,0.07); padding: 3px 10px; border-radius: 20px; margin-bottom: 7px; }
+  .bundle-title { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; color: var(--ink); margin-bottom: 7px; }
+  .bundle-desc { font-size: 12.5px; color: var(--muted); line-height: 1.6; margin-bottom: 6px; }
+  .bundle-nb { font-size: 10px; color: var(--muted); font-style: italic; opacity: 0.6; margin-bottom: 14px; }
+  .bundle-pricing { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 13px; flex-wrap: wrap; }
+  .bundle-price-orig { font-size: 16px; font-weight: 400; color: var(--muted); text-decoration: line-through; }
+  .bundle-price-new { font-size: 28px; font-weight: 700; color: var(--wine); letter-spacing: -0.5px; line-height: 1; }
+  .discount-badge { background: var(--wine); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 20px; }
+  .bundle-btn { width: 100%; padding: 14px; font-size: 12px; letter-spacing: 1.5px; background: var(--ink); box-shadow: 0 4px 14px rgba(24,18,16,0.2); border-radius: 12px; }
+  .bundle-btn:active { background: #2A1A08; }
+
+  /* ── SIDE TAB ── */
+  .side-tab { position: fixed; right: 0; top: 50%; transform: translateY(-50%); z-index: 150; display: flex; align-items: stretch; cursor: pointer; filter: drop-shadow(-3px 0 10px rgba(24,18,16,0.15)); }
+  .side-tab-label { writing-mode: vertical-rl; text-orientation: mixed; background: var(--wine); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 1px; padding: 14px 7px; border-radius: 10px 0 0 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: background 0.2s; }
+  .side-tab:hover .side-tab-label { background: var(--wine-light); }
+  .side-tab-badge { writing-mode: horizontal-tb; background: var(--gold); color: var(--ink); font-size: 10px; font-weight: 800; padding: 3px 5px; border-radius: 4px; line-height: 1; }
+
+  /* ── SIDE PANEL ── */
+  .side-panel { position: fixed; right: -340px; top: 0; bottom: 0; width: 320px; max-width: 85vw; background: var(--cream); z-index: 400; box-shadow: -4px 0 24px rgba(24,18,16,0.15); transition: right 0.35s cubic-bezier(0.4,0,0.2,1); display: flex; flex-direction: column; overflow-y: auto; }
+  .side-panel.open { right: 0; }
+  .side-panel-overlay { position: fixed; inset: 0; background: rgba(24,18,16,0.5); z-index: 390; opacity: 0; pointer-events: none; transition: opacity 0.3s; backdrop-filter: blur(3px); }
+  .side-panel-overlay.active { opacity: 1; pointer-events: all; }
+  .side-panel-header { background: var(--ink); padding: 18px 18px 16px; display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .side-panel-header h3 { font-size: 16px; font-weight: 700; color: var(--cream); line-height: 1.25; }
+  .side-panel-header h3 em { color: var(--gold); font-style: italic; font-weight: 400; }
+  .side-panel-close { background: none; border: none; color: rgba(245,240,232,0.5); font-size: 18px; cursor: pointer; flex-shrink: 0; }
+  .side-panel-body { padding: 18px; flex: 1; }
+  .side-panel-reason { font-size: 13px; font-style: italic; color: var(--muted); text-align: center; margin-bottom: 16px; line-height: 1.55; }
+  .side-panel-book { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px; display: grid; grid-template-columns: 60px 1fr; gap: 12px; align-items: center; margin-bottom: 14px; }
+  .side-panel-cover { width: 100%; aspect-ratio: 2/3; border-radius: 5px; box-shadow: 2px 3px 10px rgba(24,18,16,0.2); display: flex; flex-direction: column; justify-content: flex-end; padding: 5px 4px; overflow: hidden; }
+  .side-panel-cover-title { font-size: 7.5px; font-weight: 700; color: rgba(245,240,232,0.92); line-height: 1.2; position: relative; z-index: 1; }
+  .side-panel-book-info h4 { font-size: 15px; font-weight: 700; line-height: 1.2; margin-bottom: 4px; }
+  .side-panel-book-info p { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 10px; }
+  .side-price-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .side-price-new { font-size: 22px; font-weight: 700; color: var(--wine); }
+  .side-price-old { font-size: 12px; color: var(--muted); text-decoration: line-through; }
+  .side-badge { font-size: 9px; font-weight: 700; text-transform: uppercase; background: var(--wine); color: #fff; padding: 2px 7px; border-radius: 20px; }
+  .side-timer { text-align: center; font-size: 12px; color: var(--muted); margin-bottom: 14px; }
+  .side-timer span { font-weight: 700; color: var(--wine); font-size: 15px; }
+  .side-cta { width: 100%; padding: 14px; background: var(--wine); color: #fff; border: none; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; border-radius: 12px; cursor: pointer; margin-bottom: 8px; -webkit-appearance: none; }
+  .side-cta:active { background: var(--wine-light); }
+  .side-skip { display: block; text-align: center; font-size: 12px; color: var(--muted); cursor: pointer; padding: 8px; border: none; background: none; width: 100%; text-decoration: underline; text-underline-offset: 3px; }
+
+  /* ── UPSELL MODAL — notification style ── */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(24,18,16,0.5); z-index: 1000; backdrop-filter: blur(4px); align-items: center; justify-content: center; padding: 24px; }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: #fff;
+    width: 100%;
+    max-width: 360px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(24,18,16,0.18), 0 8px 24px rgba(24,18,16,0.1);
+    animation: popIn 0.36s cubic-bezier(0.34,1.56,0.64,1) forwards;
+  }
+  @keyframes popIn { from { opacity: 0; transform: scale(0.88) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+  .modal-header { background: #fff; border-bottom: 1px solid var(--border); padding: 16px 18px 14px; text-align: left; }
+  .modal-header .eyebrow { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--wine); margin-bottom: 5px; }
+  .modal-header h3 { font-size: 16px; font-weight: 700; color: var(--ink); line-height: 1.3; }
+  .modal-header h3 em { color: var(--wine); font-style: normal; }
+  .modal-body { padding: 14px 16px 18px; background: #fff; }
+  .modal-reason { font-size: 13px; color: var(--muted); text-align: left; margin-bottom: 14px; line-height: 1.55; }
+  .modal-book { display: grid; grid-template-columns: 68px 1fr; gap: 12px; align-items: center; padding: 12px; background: var(--surface); border-radius: 12px; margin-bottom: 14px; border: 1px solid var(--border); }
+  .modal-book-cover { width: 100%; aspect-ratio: 2/3; border-radius: 6px; overflow: hidden; box-shadow: 2px 3px 10px rgba(24,18,16,0.15); }
+  .modal-book-cover img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 6px; }
+  .modal-book-info h4 { font-size: 14px; font-weight: 700; margin-bottom: 3px; line-height: 1.2; color: var(--ink); }
+  .modal-book-info p { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 9px; }
+  .modal-price-row { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+  .modal-price-new { font-size: 22px; font-weight: 700; color: var(--wine); }
+  .modal-price-old { font-size: 12px; color: var(--muted); text-decoration: line-through; }
+  .modal-badge { font-size: 9px; font-weight: 700; text-transform: uppercase; background: var(--wine); color: #fff; padding: 2px 7px; border-radius: 20px; }
+  .modal-timer { text-align: center; font-size: 12px; color: var(--muted); margin-bottom: 13px; background: var(--surface); border-radius: 8px; padding: 7px; }
+  .modal-timer span { font-weight: 700; color: var(--wine); font-size: 14px; }
+  .modal-cta { width: 100%; padding: 14px; background: var(--wine); color: #fff; border: none; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; border-radius: 12px; cursor: pointer; margin-bottom: 8px; -webkit-appearance: none; }
+  .modal-cta:active { background: var(--wine-light); }
+  .modal-skip { display: block; text-align: center; font-size: 12px; color: var(--muted); cursor: pointer; padding: 6px; border: none; background: none; width: 100%; text-decoration: underline; text-underline-offset: 3px; }
+
+  /* ── PRODUCT PAGE (overlay) ── */
+  .product-page {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--cream);
+    z-index: 600;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .product-page.active { display: block; }
+
+  .product-header {
+    position: sticky;
+    top: 0;
+    background: var(--cream);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    z-index: 10;
+  }
+  .product-back {
+    background: none; border: none;
+    font-size: 22px; cursor: pointer;
+    color: var(--ink); flex-shrink: 0;
+    line-height: 1; padding: 2px;
+  }
+  .product-header-title { font-size: 14px; font-weight: 700; color: var(--ink); line-height: 1.2; }
+
+  .product-body { padding: 0 0 120px; max-width: 560px; margin: 0 auto; }
+
+  /* Cover hero */
+  .product-cover-hero {
+    width: 100%; height: 220px;
+    position: relative; overflow: hidden;
+  }
+  .product-cover-hero-bg {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .product-cover-hero-bg img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+  .product-cover-hero-bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 50%, var(--cream) 100%);
+  }
+  .product-ebook-mockup {
+    width: 110px; height: 155px;
+    border-radius: 4px 10px 10px 4px;
+    box-shadow: -6px 6px 24px rgba(0,0,0,0.4), inset -3px 0 0 rgba(0,0,0,0.2);
+    display: flex; flex-direction: column;
+    justify-content: flex-end; padding: 12px 10px;
+    position: relative; overflow: hidden; z-index: 1;
+  }
+  .product-ebook-title { font-size: 11px; font-weight: 700; color: rgba(245,240,232,0.95); line-height: 1.3; position: relative; z-index: 1; }
+  .product-ebook-brand { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: rgba(245,240,232,0.45); margin-top: 6px; position: relative; z-index: 1; }
+
+  .product-content { padding: 20px 18px 0; }
+  .product-tag { display: inline-block; font-size: 9px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--wine); background: rgba(123,74,45,0.08); padding: 3px 8px; border-radius: 20px; margin-bottom: 10px; }
+  .product-title { font-size: clamp(22px, 5.5vw, 30px); font-weight: 700; line-height: 1.15; letter-spacing: -0.5px; margin-bottom: 6px; color: var(--ink); }
+  .product-tagline { font-size: 14px; color: var(--muted); line-height: 1.55; margin-bottom: 20px; font-style: italic; }
+
+  .product-section-title { font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; margin-top: 24px; }
+
+  .product-description { font-size: 14px; color: var(--ink); line-height: 1.75; white-space: pre-line; margin-bottom: 6px; }
+
+  .product-points { list-style: none; margin-bottom: 6px; }
+  .product-points li { font-size: 13.5px; color: var(--ink); padding: 6px 0; display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; border-bottom: 1px solid var(--border); }
+  .product-points li:last-child { border-bottom: none; }
+  .product-points li::before { content: '✓'; color: var(--wine); font-weight: 700; font-size: 12px; margin-top: 2px; flex-shrink: 0; }
+
+  .product-nb { font-size: 11px; color: var(--muted); font-style: italic; opacity: 0.65; margin-top: 16px; }
+
+  /* Checkout bar — fixed at bottom */
+  .checkout-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    z-index: 600;
+    box-shadow: 0 -4px 20px rgba(24,18,16,0.1);
+  }
+  .checkout-bar.hidden { display: none; }
+  .checkout-price-block { display: flex; flex-direction: column; gap: 1px; }
+  .checkout-price { font-size: 24px; font-weight: 700; color: var(--ink); letter-spacing: -0.5px; line-height: 1; }
+  .checkout-label { font-size: 10px; color: var(--muted); }
+  .checkout-cta {
+    flex: 1;
+    max-width: 220px;
+    padding: 15px 20px;
+    background: var(--wine); color: #fff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
+    border-radius: 12px; cursor: pointer; border: none;
+    box-shadow: 0 4px 16px rgba(123,74,45,0.3);
+    -webkit-appearance: none;
+  }
+  .checkout-cta:active { background: var(--wine-light); }
+
+  /* ── MICRO NOTIFICATIONS ── */
+  .micro-notif { position: fixed; bottom: 24px; left: 16px; z-index: 450; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+  .notif-pill { background: #fff; color: var(--ink); padding: 11px 14px; border-radius: 14px; font-size: 12.5px; font-weight: 500; box-shadow: 0 4px 20px rgba(24,18,16,0.14), 0 1px 4px rgba(24,18,16,0.08); display: flex; flex-direction: column; gap: 4px; opacity: 0; transform: translateX(-20px); transition: opacity 0.4s ease, transform 0.4s ease; max-width: 230px; line-height: 1.35; border: 1px solid var(--border); }
+  .notif-pill.show { opacity: 1; transform: translateX(0); }
+  .notif-pill-top { display: flex; align-items: center; gap: 8px; }
+  .notif-pill-icon { font-size: 15px; flex-shrink: 0; }
+  .notif-pill-name { font-size: 11px; font-weight: 700; color: var(--ink); }
+  .notif-pill-city { font-size: 10px; color: var(--muted); font-weight: 400; }
+  .notif-pill-text { font-size: 12px; color: #444; line-height: 1.45; font-style: italic; }
+  .notif-pill-stars { color: #f4a623; font-size: 11px; letter-spacing: 1px; }
+  .notif-icon { font-size: 18px; flex-shrink: 0; }
+
+  /* ── REVIEWS ── */
+  #recensioni { padding: 32px 0 18px; overflow: hidden; }
+  .reviews-heading { text-align: center; padding: 0 18px 20px; }
+  .reviews-heading h2 { font-size: 19px; font-weight: 700; letter-spacing: -0.3px; color: var(--ink); margin-bottom: 3px; }
+  .reviews-heading p { font-size: 12.5px; color: var(--muted); }
+  .reviews-track-wrap { overflow: hidden; position: relative; }
+  .reviews-track-wrap::before, .reviews-track-wrap::after { content: ''; position: absolute; top: 0; bottom: 0; width: 32px; z-index: 2; pointer-events: none; }
+  .reviews-track-wrap::before { left: 0; background: linear-gradient(to right, var(--cream), transparent); }
+  .reviews-track-wrap::after { right: 0; background: linear-gradient(to left, var(--cream), transparent); }
+  .reviews-track { display: flex; gap: 10px; padding: 6px 18px 10px; animation: scrollReviews 30s linear infinite; width: max-content; }
+  .reviews-track:hover { animation-play-state: paused; }
+  @keyframes scrollReviews { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  .review-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; width: 220px; flex-shrink: 0; }
+  .review-stars { color: var(--gold); font-size: 12px; letter-spacing: 1px; margin-bottom: 7px; }
+  .review-text { font-size: 12.5px; color: var(--ink); line-height: 1.6; margin-bottom: 10px; font-style: italic; }
+  .review-author { display: flex; align-items: center; gap: 8px; }
+  .review-avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; flex-shrink: 0; }
+  .review-name { font-size: 11.5px; font-weight: 600; color: var(--ink); }
+  .review-book { font-size: 10px; color: var(--muted); }
+
+  /* ── NEWSLETTER ── */
+  #newsletter { background: var(--ink); padding: 44px 18px; text-align: center; position: relative; overflow: hidden; }
+  #newsletter::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 70% at 50% 50%, rgba(201,168,76,0.07) 0%, transparent 70%); pointer-events: none; }
+  #newsletter h2 { font-size: clamp(21px, 5.5vw, 30px); font-weight: 700; color: var(--cream); margin-bottom: 9px; position: relative; line-height: 1.25; letter-spacing: -0.3px; }
+  #newsletter h2 em { color: var(--gold); font-style: italic; font-weight: 400; }
+  #newsletter > p { color: rgba(245,240,232,0.5); font-size: 13.5px; margin-bottom: 26px; line-height: 1.6; position: relative; }
+  .newsletter-form { display: flex; flex-direction: column; gap: 9px; max-width: 380px; margin: 0 auto; position: relative; }
+  .newsletter-form input { padding: 14px 16px; border: 1px solid rgba(201,168,76,0.3); background: rgba(245,240,232,0.06); color: var(--cream); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; outline: none; border-radius: 11px; -webkit-appearance: none; }
+  .newsletter-form input::placeholder { color: rgba(245,240,232,0.3); }
+  .newsletter-form button { padding: 14px; background: var(--gold); color: var(--ink); border: none; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 11px; -webkit-appearance: none; }
+  .newsletter-form button:active { background: var(--gold-pale); }
+  .newsletter-micro { margin-top: 9px; font-size: 10.5px; color: rgba(245,240,232,0.22); position: relative; }
+
+  /* FOOTER */
+  footer { background: var(--ink); padding: 22px 18px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); }
+  footer p { font-size: 11.5px; color: rgba(245,240,232,0.25); }
+  footer a { color: rgba(245,240,232,0.25); text-decoration: none; }
+
+  @media (min-width: 600px) {
+    .newsletter-form { flex-direction: row; }
+    .newsletter-form input { flex: 1; border-radius: 11px 0 0 11px; }
+    .newsletter-form button { border-radius: 0 11px 11px 0; }
+  }
+
+  /* ── PAYMENT MODAL ── */
+  .payment-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(24,18,16,0.75);
+    z-index: 2000;
+    backdrop-filter: blur(6px);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .payment-overlay.active { display: flex; }
+
+  .payment-modal {
+    background: var(--cream);
+    width: 100%;
+    max-width: 420px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(24,18,16,0.35);
+    animation: popIn 0.36s cubic-bezier(0.34,1.56,0.64,1) forwards;
+  }
+
+  .payment-modal-header {
+    background: var(--ink);
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .payment-modal-header h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 1.2;
+  }
+
+  .payment-modal-header .payment-amount {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+
+  .payment-close {
+    background: none;
+    border: none;
+    color: rgba(245,240,232,0.5);
+    font-size: 20px;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-left: 12px;
+  }
+
+  .payment-body { padding: 20px; }
+
+  .payment-summary {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 18px;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .payment-summary strong { color: var(--ink); font-weight: 600; }
+
+  #stripe-elements-container {
+    margin-bottom: 16px;
+  }
+
+  #payment-element {
+    min-height: 60px;
+  }
+
+  .pay-btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--wine);
+    color: #fff;
+    border: none;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    -webkit-appearance: none;
+  }
+
+  .pay-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  .pay-btn:not(:disabled):active { background: var(--wine-light); }
+
+  .pay-btn .spinner {
+    width: 16px; height: 16px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: none;
+  }
+
+  .pay-btn.loading .spinner { display: block; }
+  .pay-btn.loading .btn-text { display: none; }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .payment-error {
+    color: #c0392b;
+    font-size: 13px;
+    text-align: center;
+    margin-top: 10px;
+    display: none;
+  }
+
+  .payment-secure {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 12px;
+    font-size: 11px;
+    color: var(--muted);
+    opacity: 0.7;
+  }
+
+  /* Success screen */
+  .payment-success {
+    display: none;
+    padding: 32px 20px;
+    text-align: center;
+  }
+
+  .payment-success.active { display: block; }
+
+  .success-icon {
+    font-size: 48px;
+    margin-bottom: 14px;
+  }
+
+  .payment-success h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .payment-success p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+</style>
+<script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <button class="hamburger" id="hamburgerBtn" onclick="toggleDrawer()">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="logo-circle"><img src="logo.jpg" alt="Convincimi"></div>
+  <div class="header-spacer"></div>
+</header>
+
+<!-- NAV DRAWER -->
+<nav class="nav-drawer" id="navDrawer">
+  <div class="nav-drawer-overlay" onclick="closeDrawer()"></div>
+  <div class="nav-drawer-panel">
+    <button class="nav-drawer-close" onclick="closeDrawer()">✕</button>
+    <div class="nav-drawer-logo"><span>Convincimi</span></div>
+    <ul class="nav-links">
+      <li><a href="#libri" onclick="closeDrawer()"><span class="nav-icon">📚</span>Libri</a></li>
+      <li><a href="recensioni.html" onclick="closeDrawer()"><span class="nav-icon">⭐</span>Recensioni</a></li>
+      <li><a href="javascript:void(0)" onclick="closeDrawer();openPage('newsletter')"><span class="nav-icon">✉️</span>Newsletter</a></li>
+      <li><a href="javascript:void(0)" onclick="closeDrawer();openPage('chisiamo')"><span class="nav-icon">👥</span>Chi siamo</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>Meriti una relazione<br>che ti renda<br><em>felice</em></h1>
+</section>
+
+<!-- PROOF -->
+<div class="proof-band">
+  <div class="proof-band-inner">
+    <div class="proof-item"><div class="proof-stat">10.000+</div><div class="proof-label">lettori</div></div>
+    <div class="proof-item"><div class="proof-stat">4.9★</div><div class="proof-label">valutazione media</div></div>
+    <div class="proof-item"><div class="proof-stat">5</div><div class="proof-label">guide digitali</div></div>
+  </div>
+</div>
+
+<!-- BOOKS LABEL -->
+<div class="books-heading" id="libri"><h2>I nostri libri</h2></div>
+
+<!-- BOOKS -->
+<section class="books-section">
+
+  <!-- BOOK 1 — La tua persona ideale -->
+  <article class="book-card" onclick="window.location.href='persona-ideale.html'">
+    <div class="book-cover-area">
+      <img src="cover1.png" alt="La tua persona ideale" style="width:100%;height:100%;object-fit:cover;display:block;min-height:200px;">
+    </div>
+    <div class="book-info">
+      <div>
+        <span class="book-tag">Scelta del partner</span>
+        <h3 class="book-title">La tua persona ideale</h3>
+        <p class="book-tagline">Prima di scegliere il partner giusto, devi capire chi sei davvero nelle relazioni. Questo libro ti dà la lucidità per farlo.</p>
+      </div>
+      <div class="book-bottom">
+        <div class="book-price-block"><span class="book-price">14,97 € <span class="book-discount-badge">−63%</span></span><span class="book-price-orig">39,97 €</span></div>
+        <button class="cta-btn" onclick="event.stopPropagation();window.location.href='persona-ideale.html'">Scopri →</button>
+      </div>
+    </div>
+  </article>
+
+  <!-- BOOK 3 — I codici segreti -->
+  <article class="book-card" onclick="window.location.href='codici-segreti.html'">
+    <div class="book-cover-area">
+      <img src="cover3.png" alt="I codici segreti della mente di LUI e LEI" style="width:100%;height:100%;object-fit:cover;display:block;min-height:200px;">
+    </div>
+    <div class="book-info">
+      <div>
+        <span class="book-tag">Psicologia</span>
+        <h3 class="book-title">I codici segreti della mente di LUI e LEI</h3>
+        <p class="book-tagline">Uomo e donna vivono le relazioni attraverso schemi completamente diversi. Capire come pensa l'altro sesso cambia radicalmente il modo in cui vivi le relazioni.</p>
+      </div>
+      <div class="book-bottom">
+        <div class="book-price-block"><span class="book-price">19,97 € <span class="book-discount-badge">−50%</span></span><span class="book-price-orig">39,97 €</span></div>
+        <button class="cta-btn" onclick="event.stopPropagation();window.location.href='codici-segreti.html'">Scopri →</button>
+      </div>
+    </div>
+  </article>
+
+  <!-- BUNDLE -->
+  <article class="book-card bundle-card" onclick="window.location.href='bundle.html'">
+    <div class="bundle-ribbon">★ Best Value</div>
+    <div class="bundle-covers-strip">
+      <img src="cover1.png" alt="" style="width:64px;height:90px;object-fit:cover;border-radius:5px;box-shadow:2px 4px 12px rgba(24,18,16,0.25);flex-shrink:0;">
+      <img src="cover2.png" alt="" style="width:64px;height:100px;object-fit:cover;border-radius:5px;box-shadow:2px 4px 12px rgba(24,18,16,0.25);flex-shrink:0;">
+      <img src="cover3.png" alt="" style="width:64px;height:110px;object-fit:cover;border-radius:5px;box-shadow:2px 4px 12px rgba(24,18,16,0.25);flex-shrink:0;">
+      <img src="cover4.png" alt="" style="width:64px;height:100px;object-fit:cover;border-radius:5px;box-shadow:2px 4px 12px rgba(24,18,16,0.25);flex-shrink:0;">
+    </div>
+    <div class="bundle-info">
+      <div class="bundle-tag" style="background:#c0392b;color:#fff;font-weight:800;font-size:13px;padding:5px 12px;border-radius:8px;display:inline-block;">RISPARMIA 100€</div>
+      <h3 class="bundle-title">Collezione Convincimi</h3>
+      <p class="bundle-desc">La raccolta definitiva di tutti i libri Convincimi in un unico pacchetto.</p>
+      <p class="bundle-nb">📱 Formato digitale</p>
+      <div class="bundle-pricing">
+        <span class="bundle-price-orig">164,97 €</span>
+        <span class="bundle-price-new">49,97 €</span>
+        <span class="discount-badge">−70%</span>
+      </div>
+      <button class="cta-btn bundle-btn" onclick="event.stopPropagation();window.location.href='bundle.html'">Scopri il pacchetto →</button>
+    </div>
+  </article>
+
+  <!-- BOOK 2 — La tua relazione ideale -->
+  <article class="book-card" onclick="window.location.href='relazione-ideale.html'">
+    <div class="book-cover-area">
+      <img src="cover2.png" alt="La tua relazione ideale" style="width:100%;height:100%;object-fit:cover;display:block;min-height:200px;">
+    </div>
+    <div class="book-info">
+      <div>
+        <span class="book-tag">Dinamiche relazionali</span>
+        <h3 class="book-title">La tua relazione ideale</h3>
+        <p class="book-tagline">Ogni coppia attraversa dinamiche che possono rafforzarla... o distruggerla. Questo libro ti insegna a riconoscerle, e a non subirle più.</p>
+      </div>
+      <div class="book-bottom">
+        <div class="book-price-block"><span class="book-price">19,97 € <span class="book-discount-badge">−50%</span></span><span class="book-price-orig">39,97 €</span></div>
+        <button class="cta-btn" onclick="event.stopPropagation();window.location.href='relazione-ideale.html'">Scopri →</button>
+      </div>
+    </div>
+  </article>
+
+  <!-- BOOK 4 — Guida al potere sociale -->
+  <article class="book-card" onclick="window.location.href='potere-sociale.html'">
+    <div class="book-cover-area">
+      <img src="cover4.png" alt="Guida al potere sociale COMPLETA" style="width:100%;height:100%;object-fit:cover;display:block;min-height:200px;">
+    </div>
+    <div class="book-info">
+      <div>
+        <span class="book-tag">Potere · Persuasione</span>
+        <h3 class="book-title">Guida al potere sociale COMPLETA</h3>
+        <p class="book-tagline">Sai perché alcune persone dominano i contesti sociali mentre altre restano in disparte? Hanno capito come funzionano le dinamiche del potere. Questo libro ti insegna a fare lo stesso.</p>
+      </div>
+      <div class="book-bottom">
+        <div class="book-price-block"><span class="book-price">24,97 € <span class="book-discount-badge">−50%</span></span><span class="book-price-orig">49,97 €</span></div>
+        <button class="cta-btn" onclick="event.stopPropagation();window.location.href='potere-sociale.html'">Scopri →</button>
+      </div>
+    </div>
+  </article>
+
+</section>
+
+<!-- SIDE TAB — small badge only -->
+<div class="side-tab" onclick="openSidePanel()" title="Pacchetto completo −70%">
+  <div class="side-tab-label" style="padding:14px 7px;gap:0;writing-mode:vertical-rl;text-orientation:mixed;font-size:13px;font-weight:800;letter-spacing:1px;background:#1A1208;color:var(--gold);">
+    −70%
+  </div>
+</div>
+
+<!-- SIDE PANEL -->
+<div class="side-panel-overlay" id="sidePanelOverlay" onclick="closeSidePanel()"></div>
+<div class="side-panel" id="sidePanel">
+  <div class="side-panel-header">
+    <h3>Tutta la nostra collezione completa</h3>
+    <button class="side-panel-close" onclick="closeSidePanel()">✕</button>
+  </div>
+  <div class="side-panel-body">
+    <p class="side-panel-reason">Tutti i libri di Convincimi in un unico pacchetto. Risparmi più di 100 euro rispetto all'acquisto singolo.</p>
+    <div class="side-panel-book">
+      <div class="side-panel-cover" style="background:none;padding:0;overflow:hidden">
+        <img src="cover5.png" alt="Collezione convincimii" style="width:100%;height:100%;object-fit:cover;border-radius:5px;">
+      </div>
+      <div class="side-panel-book-info">
+        <h4>Collezione convincimii</h4>
+        <p>La raccolta definitiva di tutti i libri in formato digitale.</p>
+        <div style="display:inline-block;background:#c0392b;color:#fff;font-size:10px;font-weight:800;letter-spacing:0.5px;padding:3px 10px;border-radius:6px;margin-bottom:8px;">RISPARMI 100€</div>
+        <div class="side-price-row">
+          <span class="side-price-new">49,97 €</span>
+          <span class="side-price-old">164,97 €</span>
+          <span class="side-badge">−70%</span>
+        </div>
+      </div>
+    </div>
+    <div class="side-timer">Offerta disponibile per i prossimi <span id="sidePanelTimer">59:00</span></div>
+    <button class="side-cta" onclick="goToCheckout(5);closeSidePanel()">Voglio il pacchetto completo →</button>
+    <button class="side-skip" onclick="closeSidePanel()">No grazie</button>
+  </div>
+</div>
+
+<!-- REVIEWS -->
+<section id="recensioni">
+  <div class="reviews-heading">
+    <h2>Cosa dicono i lettori</h2>
+    <p>Oltre 10.000 persone hanno già cambiato il loro approccio alle relazioni</p>
+  </div>
+  <div class="reviews-track-wrap">
+    <div class="reviews-track">
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Finalmente qualcuno che spiega senza giudicare. Ho capito perché scelgo sempre le stesse persone."</p><div class="review-author"><div class="review-avatar" style="background:#6B1F2A">M</div><div><div class="review-name">Martina R.</div><div class="review-book">La tua persona ideale</div></div></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Ho riconosciuto le dinamiche tossiche nella mia relazione dopo il primo capitolo."</p><div class="review-author"><div class="review-avatar" style="background:#1A3A5C">L</div><div><div class="review-name">Luca T.</div><div class="review-book">La tua relazione ideale</div></div></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Capire come pensa lui mi ha cambiato la vita. Sembrava quasi magia, ma era solo psicologia."</p><div class="review-author"><div class="review-avatar" style="background:#6B3510">S</div><div><div class="review-name">Sara F.</div><div class="review-book">I codici segreti</div></div></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Stavo perdendo la testa per qualcuno che mi manipolava. Questo libro mi ha aperto gli occhi."</p><div class="review-author"><div class="review-avatar" style="background:#3D2408">A</div><div><div class="review-name">Andrea C.</div><div class="review-book">La tua relazione ideale</div></div></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Ho comprato il pacchetto completo e non me ne pento. Ogni libro ha un pezzo del puzzle."</p><div class="review-author"><div class="review-avatar" style="background:#2A5A2A">G</div><div><div class="review-name">Giulia M.</div><div class="review-book">Convincimi ULTIMATE</div></div></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Non credevo che un libro potesse farmi capire così bene le dinamiche di potere."</p><div class="review-author"><div class="review-avatar" style="background:#6B1F2A">F</div><div><div class="review-name">Federico B.</div><div class="review-book">Potere sociale</div></div></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Leggevo e pensavo: stai descrivendo la mia vita. Consigliato a chiunque stia soffrendo."</p><div class="review-author"><div class="review-avatar" style="background:#1A3A5C">V</div><div><div class="review-name">Valentina D.</div><div class="review-book">La tua persona ideale</div></div></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Ho smesso di fare le stesse cose aspettandomi risultati diversi. Finalmente."</p><div class="review-author"><div class="review-avatar" style="background:#6B3510">R</div><div><div class="review-name">Roberto P.</div><div class="review-book">La tua relazione ideale</div></div></div></div>
+      <!-- duplicate -->
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Finalmente qualcuno che spiega senza giudicare. Ho capito perché scelgo sempre le stesse persone."</p><div class="review-author"><div class="review-avatar" style="background:#6B1F2A">M</div><div><div class="review-name">Martina R.</div><div class="review-book">La tua persona ideale</div></div></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Ho riconosciuto le dinamiche tossiche nella mia relazione dopo il primo capitolo."</p><div class="review-author"><div class="review-avatar" style="background:#1A3A5C">L</div><div><div class="review-name">Luca T.</div><div class="review-book">La tua relazione ideale</div></div></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Capire come pensa lui mi ha cambiato la vita. Sembrava quasi magia, ma era solo psicologia."</p><div class="review-author"><div class="review-avatar" style="background:#6B3510">S</div><div><div class="review-name">Sara F.</div><div class="review-book">I codici segreti</div></div></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Stavo perdendo la testa per qualcuno che mi manipolava. Questo libro mi ha aperto gli occhi."</p><div class="review-author"><div class="review-avatar" style="background:#3D2408">A</div><div><div class="review-name">Andrea C.</div><div class="review-book">La tua relazione ideale</div></div></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Ho comprato il pacchetto completo e non me ne pento. Ogni libro ha un pezzo del puzzle."</p><div class="review-author"><div class="review-avatar" style="background:#2A5A2A">G</div><div><div class="review-name">Giulia M.</div><div class="review-book">Convincimi ULTIMATE</div></div></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Non credevo che un libro potesse farmi capire così bene le dinamiche di potere."</p><div class="review-author"><div class="review-avatar" style="background:#6B1F2A">F</div><div><div class="review-name">Federico B.</div><div class="review-book">Potere sociale</div></div></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Leggevo e pensavo: stai descrivendo la mia vita. Consigliato a chiunque stia soffrendo."</p><div class="review-author"><div class="review-avatar" style="background:#1A3A5C">V</div><div><div class="review-name">Valentina D.</div><div class="review-book">La tua persona ideale</div></div></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Ho smesso di fare le stesse cose aspettandomi risultati diversi. Finalmente."</p><div class="review-author"><div class="review-avatar" style="background:#6B3510">R</div><div><div class="review-name">Roberto P.</div><div class="review-book">La tua relazione ideale</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section id="newsletter">
+  <h2>Psicologia delle relazioni,<br><em>ogni settimana gratis</em></h2>
+  <p>Contenuti esclusivi su manipolazione, dinamiche tossiche e come costruire relazioni sane.</p>
+  <form class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+    <input type="email" placeholder="La tua email" required>
+    <button type="submit">Iscriviti</button>
+  </form>
+  <p class="newsletter-micro">Nessuno spam. Puoi cancellarti quando vuoi.</p>
+</section>
+
+<!-- NEWSLETTER PAGE -->
+<div class="product-page" id="newsletterPage">
+  <div class="product-header">
+    <button class="product-back" onclick="closePage('newsletter')">←</button>
+    <div class="product-header-title">Newsletter</div>
+  </div>
+  <div style="padding:0 0 80px;max-width:560px;margin:0 auto;">
+    <div style="padding:32px 22px 0;text-align:center;">
+      <p style="font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;">Convincimi</p>
+      <h2 style="font-size:clamp(26px,7vw,36px);font-weight:700;line-height:1.15;letter-spacing:-0.5px;margin-bottom:28px;">Newsletter</h2>
+    </div>
+
+    <div style="padding:0 22px;">
+      <p style="font-size:16px;line-height:1.8;color:var(--ink);margin-bottom:18px;">Ciao,</p>
+      <p style="font-size:16px;line-height:1.8;color:var(--ink);margin-bottom:18px;">Hai notato quanto siamo bravi a dare consigli sulle relazioni dei nostri amici?</p>
+      <p style="font-size:16px;line-height:1.8;color:var(--ink);margin-bottom:18px;">Ci trasformiamo immediatamente in psicologi esperti.</p>
+      <p style="font-size:16px;line-height:1.8;color:var(--ink);margin-bottom:18px;">Rilasciando diagnosi come:<br><em style="color:var(--wine);">"Sì quella è una red flag, devi lasciarla"</em></p>
+      <p style="font-size:16px;line-height:1.8;color:var(--ink);margin-bottom:18px;">oppure definizioni come:</p>
+
+      <!-- Ultimo paragrafo con dissolvenza -->
+      <div style="position:relative;margin-bottom:0;">
+        <p style="font-size:16px;line-height:1.8;color:var(--ink);margin-bottom:0;"><em style="color:var(--wine);">"Ma sì, si capiva dall'inizio che è un narcisista… come hai fatto a non vederlo?"</em><br>Poi però, magicamente...</p>
+        <!-- Dissolvenza che sfuma il testo nel nero -->
+        <div style="position:absolute;bottom:0;left:calc(-50vw + 50% + -22px);right:calc(-50vw + 50% + -22px);height:120px;background:linear-gradient(to bottom,transparent 0%,#1A1208 100%);pointer-events:none;"></div>
+      </div>
+
+      <!-- Zona nera con "Continua a leggere" -->
+      </div>
+    <div style="background:#1A1208;padding:18px 22px 28px;margin:0 calc(-50vw + 50%);padding-left:max(22px, calc(50vw - 280px));padding-right:max(22px, calc(50vw - 280px));">
+      <p style="text-align:center;font-size:15px;font-weight:600;color:var(--gold);margin:0 0 20px;">Continua a leggere...</p>
+      <!-- Form iscrizione -->
+      <div style="background:rgba(255,255,255,0.05);border-radius:12px;padding:24px 16px;text-align:center;border:1px solid rgba(201,168,76,0.15);">
+      <h3 style="font-size:20px;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.25;">Per continuare a leggere gratuitamente<br>iscriviti alla newsletter</h3>
+      <p style="font-size:13px;color:rgba(245,240,232,0.55);margin-bottom:22px;">Iscriviti gratuitamente. Contenuti esclusivi su relazioni, psicologia e dinamiche di potere.</p>
+      <form onsubmit="handleNewsletterPageSubmit(event)" style="display:flex;flex-direction:column;gap:10px;">
+        <input type="email" placeholder="La tua email" required id="newsletterPageEmail" style="padding:14px 16px;border:1px solid rgba(201,168,76,0.3);background:rgba(245,240,232,0.06);color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;outline:none;border-radius:11px;">
+        <button type="submit" id="newsletterPageBtn" style="padding:14px;background:var(--gold);color:var(--ink);border:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:11px;">Iscriviti gratis</button>
+      </form>
+      <p style="margin-top:10px;font-size:11px;color:rgba(245,240,232,0.25);">Nessuno spam. Puoi cancellarti quando vuoi.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHI SIAMO PAGE -->
+<div class="product-page" id="chisiamoPage">
+  <div class="product-header">
+    <button class="product-back" onclick="closePage('chisiamo')">←</button>
+    <div class="product-header-title">Chi siamo</div>
+  </div>
+  <div style="padding:0 0 80px;max-width:560px;margin:0 auto;">
+    <div style="padding:32px 22px 0;text-align:center;">
+      <div style="width:80px;height:80px;border-radius:50%;overflow:hidden;margin:0 auto 20px;"><img src="logo.jpg" style="width:100%;height:100%;object-fit:cover;"></div>
+      <p style="font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Convincimi</p>
+      <h2 style="font-size:clamp(24px,7vw,34px);font-weight:700;line-height:1.15;letter-spacing:-0.5px;margin-bottom:24px;">Capiamo le relazioni.<br><span style="color:var(--wine);">Davvero.</span></h2>
+    </div>
+
+    <div style="padding:0 22px;">
+      <p style="font-size:15px;line-height:1.8;color:var(--ink);margin-bottom:20px;">Convincimi nasce da una domanda semplice: <strong>perché continuiamo a fare le stesse scelte sbagliate in amore?</strong></p>
+
+      <p style="font-size:15px;line-height:1.8;color:var(--ink);margin-bottom:20px;">Anni passati a studiare, osservare e vivere le dinamiche relazionali da vicino, sulla mia pelle, e su quella delle persone intorno a me.</p>
+
+      <p style="font-size:15px;line-height:1.8;color:var(--ink);margin-bottom:20px;">Fino a capire una cosa… La maggior parte di quello che ci viene raccontato sulle relazioni è troppo vago per essere utile. Troppo romantico per essere onesto. E troppo generico per fare la differenza.</p>
+
+      <p style="font-size:15px;line-height:1.8;color:var(--ink);margin-bottom:20px;"><strong>Convincimi esiste per colmare quel vuoto.</strong></p>
+
+      <p style="font-size:15px;line-height:1.8;color:var(--ink);margin-bottom:24px;">Non siamo un blog di consigli sentimentali e nemmeno una pagina di frasi motivazionali. Siamo un progetto che spoglia la psicologia delle relazioni da tutte le illusioni e la traduce in strumenti concreti per chi vuole capire davvero le dinamiche psicologiche di fondo che guidano le relazioni.</p>
+
+      <div style="background:var(--ink);border-radius:14px;padding:22px 20px;margin-bottom:24px;">
+        <p style="font-size:15px;line-height:1.75;color:rgba(245,240,232,0.9);font-style:italic;">"Dietro ogni relazione che ti ha fatto soffrire c'è una parte di te che cerca di dirti qualcosa. Ascoltarla è il primo passo per cambiare."</p>
+      </div>
+
+      <p style="font-size:15px;line-height:1.8;color:var(--muted);margin-bottom:10px;font-style:italic;">Questa è l'idea da cui partiamo.</p>
+
+      <p style="font-size:15px;line-height:1.8;color:var(--ink);margin-bottom:20px;">La maggior parte delle persone non cambia perché decide di farlo. Cambia perché il dolore, alla fine, non lascia altra scelta.</p>
+
+      <p style="font-size:15px;line-height:1.8;color:var(--ink);margin-bottom:20px;">Noi lavoriamo per anticipare quel momento: per darti gli strumenti <strong>prima che il dolore diventi l'unico maestro.</strong></p>
+
+      <p style="font-size:15px;line-height:1.8;color:var(--ink);margin-bottom:20px;">Convincimi esiste per chi ha smesso di cercare risposte facili e vuole capire davvero cosa lo muove, cosa lo blocca, cosa lo ha reso la persona che è oggi nelle relazioni.</p>
+
+      <p style="font-size:15px;line-height:1.8;color:var(--ink);margin-bottom:32px;">Non è un percorso facile. Ma è l'unico che ti porta a conoscerti davvero.</p>
+
+      <button onclick="closePage('chisiamo');document.getElementById('libri').scrollIntoView({behavior:'smooth'})" style="width:100%;padding:16px;background:var(--wine);color:#fff;border:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-radius:12px;cursor:pointer;">Scopri i libri →</button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 Marketing Brothers Ltd · <a href="/privacy.html">Privacy Policy</a> · <a href="/termini.html">Termini e Condizioni</a> · <a href="/cookie.html">Cookie Policy</a> · <a href="mailto:convincimii@gmail.com">Contatti</a></p>
+</footer>
+
+<!-- COOKIE BANNER -->
+<div id="cookieBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#1A1208;color:#fff;padding:16px 20px;z-index:9999;box-shadow:0 -4px 24px rgba(0,0,0,0.3);">
+  <div style="max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:12px;">
+    <p style="font-size:13px;line-height:1.6;color:rgba(245,240,232,0.85);margin:0;">
+      🍪 Usiamo cookie tecnici necessari al funzionamento del sito e per la sicurezza dei pagamenti (Stripe). Nessun cookie pubblicitario.
+      <a href="/cookie.html" style="color:#C9A84C;text-decoration:underline;">Cookie Policy</a> · 
+      <a href="/privacy.html" style="color:#C9A84C;text-decoration:underline;">Privacy Policy</a>
+    </p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button onclick="acceptCookies()" style="padding:10px 22px;background:#C9A84C;color:#1A1208;border:none;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">Accetta</button>
+      <button onclick="rejectCookies()" style="padding:10px 22px;background:transparent;color:rgba(245,240,232,0.6);border:1px solid rgba(245,240,232,0.2);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;cursor:pointer;">Solo necessari</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  if (!localStorage.getItem('cookie_consent')) {
+    document.getElementById('cookieBanner').style.display = 'block';
+  }
+})();
+function acceptCookies() {
+  localStorage.setItem('cookie_consent', 'accepted');
+  document.getElementById('cookieBanner').style.display = 'none';
+}
+function rejectCookies() {
+  localStorage.setItem('cookie_consent', 'rejected');
+  document.getElementById('cookieBanner').style.display = 'none';
+}
+</script>
 
 <!-- PAYMENT MODAL -->
 <div class="payment-overlay" id="paymentOverlay">
