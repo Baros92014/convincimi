@@ -1401,7 +1401,7 @@ function handleNewsletterPageSubmit(e){
   e.preventDefault();
   const email = document.getElementById('newsletterPageEmail').value.trim();
   if (email) {
-    window.open('https://convincimi.substack.com/?email=' + encodeURIComponent(email), '_blank');
+    window.open('https://convincimi.substack.com/subscribe?email=' + encodeURIComponent(email), '_blank');
   }
 }
 // ── NEWSLETTER ──
@@ -1409,7 +1409,7 @@ function handleNewsletterSubmit(e){
   e.preventDefault();
   const email = document.getElementById('newsletterEmail').value.trim();
   if (email) {
-    window.open('https://convincimi.substack.com/?email=' + encodeURIComponent(email), '_blank');
+    window.open('https://convincimi.substack.com/subscribe?email=' + encodeURIComponent(email), '_blank');
   }
 }
 
