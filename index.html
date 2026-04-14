@@ -1412,7 +1412,6 @@ function handleNewsletterSubmit(e){
     window.open('https://convincimi.substack.com/?email=' + encodeURIComponent(email), '_blank');
   }
 }
-}
 
 // ── SCROLL REVEAL ──
 const obs=new IntersectionObserver(entries=>{entries.forEach(en=>{if(en.isIntersecting){en.target.classList.add('visible');obs.unobserve(en.target);}});},{threshold:0.01});
